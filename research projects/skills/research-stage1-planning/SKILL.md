@@ -12,7 +12,7 @@ description: >-
 
 ## When to use
 
-- Starting a **new** task under `research projects/{research-project-x}/{task-tldr}/`.
+- Starting a **new** task under `outputs/{research-project-x}/{task-tldr}/` (path from the repository root).
 - Before any orchestrator folders exist or workers run.
 
 ## Instructions
@@ -27,14 +27,15 @@ description: >-
    - Planned `{sub-task}` folder name (slug, no spaces recommended)
    - Dependencies (if any), consistent with `TASK_GRAPH.json` edges
    Then follow **[research-task-graph-waves/SKILL.md](../research-task-graph-waves/SKILL.md)**: author **`TASK_GRAPH.json`** (nodes + edges; optional `completed`), run **`research_utils.task_graph_waves`** (`execution_waves` / `waves_from_task_graph_json`) so **waves** and **topological order** are computed deterministically. On later replans, update the JSON and re-run with an accurate **`completed`** set.
-6. **Interview the user** until scope, deliverable shape, source constraints, and success criteria are unambiguous (max a few focused questions per round). **Report length / depth:** if the original request does not specify how long or deep **`FINAL_RESPONSE.md`** (and overall output) should be, **ask** the user and record the answer under **`USER_PROMPT.md`** — **Deliverable constraints** (words, pages, or qualitative level). Alternatively record an explicit waiver (e.g. protocol default depth) there so Stage II can proceed.
-7. **Tools, MCP, models:** Repo index [AGENTS.md](../../../AGENTS.md); defaults [SKILLS_AND_SCRIPTS](../../docs/SKILLS_AND_SCRIPTS.md); hosts [HOST_TOOLS](../../docs/HOST_TOOLS.md). **Model IDs:** [RESEARCH_PROTOCOL — LLM / model IDs](../../RESEARCH_PROTOCOL.md#llm--model-ids). Before `TOOLS_AND_MCP.md`, satisfy [Planning and handoff](../../RESEARCH_PROTOCOL.md#planning-and-handoff) step 9 and [Stage II readiness gates](../../RESEARCH_PROTOCOL.md#stage-ii-readiness-gates).
-8. Write **`TOOLS_AND_MCP.md`** from [templates/](../../templates/TOOLS_AND_MCP.md) with **`$ControlPlaneModel$`** and **`$ModelsForThisTask$`**.
-9. **Isolation:** Do **not** read other `{research-project-x}` trees; you **may** skim prior **`FINAL_RESPONSE.md`** under the same project.
+6. **Interview the user** until scope, deliverable shape, source constraints, and success criteria are unambiguous (max a few focused questions per round). **Report length / depth:** if the **original prompt** does not specify how long or deep **`FINAL_RESPONSE.md`** should be, **ask** the user and record the answer under **`USER_PROMPT.md`** — **Deliverable constraints**. A **protocol-default** depth is valid **only** after the **user explicitly confirms** it — do **not** record that waiver without confirmation. See [RESEARCH_PROTOCOL — step 8](../../RESEARCH_PROTOCOL.md#planning-and-handoff).
+7. **Delegation:** [RESEARCH_PROTOCOL — Delegation requirement](../../RESEARCH_PROTOCOL.md#delegation-requirement). Do **not** plan a single-session skip of workers/validators unless the **original prompt** explicitly requests it.
+8. **Tools, MCP, models:** Repo index [AGENTS.md](../../../AGENTS.md); defaults [SKILLS_AND_SCRIPTS](../../docs/SKILLS_AND_SCRIPTS.md); hosts [HOST_TOOLS](../../docs/HOST_TOOLS.md). **Model IDs:** [RESEARCH_PROTOCOL — LLM / model IDs](../../RESEARCH_PROTOCOL.md#llm--model-ids) — **verbatim** strings and **logged user confirmation**. Before `TOOLS_AND_MCP.md`, satisfy [Planning and handoff](../../RESEARCH_PROTOCOL.md#planning-and-handoff) step 9, [Default robustness](../../RESEARCH_PROTOCOL.md#hyperparameters), and [Stage II readiness gates](../../RESEARCH_PROTOCOL.md#stage-ii-readiness-gates).
+9. Write **`TOOLS_AND_MCP.md`** from [templates/](../../templates/TOOLS_AND_MCP.md) with **`$ControlPlaneModel$`** and **`$ModelsForThisTask$`**.
+10. **Isolation:** Do **not** read other `outputs/{research-project-x}` trees; you **may** skim prior **`FINAL_RESPONSE.md`** under the same **`outputs/{research-project-x}/`** program.
 
 ## Output checklist
 
-- [ ] `USER_PROMPT.md` (original request, **Deliverable constraints** filled or explicit waiver, **Approved search terms** with web basis, clarifications)
+- [ ] `USER_PROMPT.md` (original request, **Deliverable constraints** from original prompt / user answer / **user-confirmed** default only, **Model confirmation** if applicable, **Approved search terms** with web basis, clarifications)
 - [ ] `TODO.md` (task ids aligned with `TASK_GRAPH.json`)
 - [ ] `TASK_GRAPH.json` and Python-computed **waves** (or note in `TODO.md` / log where waves are recorded)
 - [ ] `TOOLS_AND_MCP.md` (+ optional `MODELS.md`)

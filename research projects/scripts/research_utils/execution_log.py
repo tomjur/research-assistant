@@ -1,21 +1,22 @@
-"""Task-level multi-agent execution log: one `log_{datetime}.txt` per user prompt (mission)."""
+"""Task-level multi-agent execution log: one canonical `log_{datetime}.txt` per mission."""
 
 from __future__ import annotations
 
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
 
-# Orchestrator resolves the active log via this pointer in `{task-tldr}/`.
 __all__ = [
-    "POINTER_NAME",
     "append_execution_record",
+    "CANONICAL_LOG_PATTERN",
     "format_log_filename",
     "render_execution_record",
     "resolve_task_execution_log",
 ]
 
-POINTER_NAME = "execution_log_active.txt"
+# Filenames from format_log_filename(): log_YYYY-MM-DD_HHMMSS.txt (UTC).
+CANONICAL_LOG_PATTERN = re.compile(r"^log_\d{4}-\d{2}-\d{2}_\d{6}\.txt$")
 
 
 def format_log_filename(now: datetime | None = None) -> str:
@@ -32,23 +33,20 @@ def resolve_task_execution_log(task_tldr_dir: Path | str, *, now: datetime | Non
     """
     Return the path to the append-only execution log for this task folder.
 
-    If ``execution_log_active.txt`` exists and names an existing file in the same
-    directory, reuse it. Otherwise create a new ``log_YYYY-MM-DD_HHMMSS.txt`` and
-    write the pointer.
+    If one or more files match the canonical name pattern ``log_YYYY-MM-DD_HHMMSS.txt``,
+    reuse the lexicographically greatest (latest UTC timestamp in the filename).
+    Otherwise create a new file with :func:`format_log_filename` and return it.
     """
     root = Path(task_tldr_dir)
     root.mkdir(parents=True, exist_ok=True)
-    pointer = root / POINTER_NAME
-    if pointer.is_file():
-        basename = pointer.read_text(encoding="utf-8").strip().splitlines()[0].strip()
-        if basename:
-            candidate = root / basename
-            if candidate.is_file():
-                return candidate
+    canonical = sorted(
+        p for p in root.glob("log_*.txt") if CANONICAL_LOG_PATTERN.match(p.name)
+    )
+    if canonical:
+        return canonical[-1]
     name = format_log_filename(now)
     log_path = root / name
     log_path.touch(exist_ok=True)
-    pointer.write_text(name + "\n", encoding="utf-8")
     return log_path
 
 

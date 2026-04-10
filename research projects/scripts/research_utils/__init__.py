@@ -1,7 +1,7 @@
 """Deterministic helpers for research orchestration (prompt variants, deduplication)."""
 
 from .execution_log import (
-    POINTER_NAME,
+    CANONICAL_LOG_PATTERN,
     append_execution_record,
     format_log_filename,
     render_execution_record,
@@ -29,7 +29,7 @@ __all__ = [
     "execution_waves",
     "topological_order",
     "waves_from_task_graph_json",
-    "POINTER_NAME",
+    "CANONICAL_LOG_PATTERN",
     "append_execution_record",
     "format_log_filename",
     "render_execution_record",

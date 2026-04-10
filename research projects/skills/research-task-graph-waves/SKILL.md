@@ -23,7 +23,7 @@ description: >-
 
 ## Artifact
 
-Write **`TASK_GRAPH.json`** in the task folder (`{task-tldr}/`) next to `TODO.md`:
+Write **`TASK_GRAPH.json`** in the task folder (`outputs/{research-project-x}/{task-tldr}/`) next to `TODO.md`:
 
 ```json
 {
@@ -39,13 +39,11 @@ Write **`TASK_GRAPH.json`** in the task folder (`{task-tldr}/`) next to `TODO.md
 
 **API:** [Helper APIs — `task_graph_waves`](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis-research_utils). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
 
-**CLI (JSON in, JSON out):** from repository root:
+**CLI (JSON in, JSON out):** from repository root, set **`PYTHONPATH="research projects/scripts"`**, then run **`python -m research_utils.task_graph_waves --file`** with the path to this task’s **`TASK_GRAPH.json`** (under **`outputs/<project>/<task-tldr>/`**).
 
 ```bash
-PYTHONPATH="research projects/scripts" python -m research_utils.task_graph_waves < TASK_GRAPH.json
+PYTHONPATH="research projects/scripts" python -m research_utils.task_graph_waves --file outputs/<project>/<task-tldr>/TASK_GRAPH.json
 ```
-
-Or `--file path/to/TASK_GRAPH.json`.
 
 ## Agent workflow
 

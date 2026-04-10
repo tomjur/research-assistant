@@ -1,6 +1,6 @@
 # Task templates
 
-Copy files from this folder when starting `research projects/{project}/{task-tldr}/` and each `{sub-task}/`.
+Copy files from this folder when starting `outputs/{project}/{task-tldr}/` at the repository root and each `{sub-task}/` under that task folder.
 
 | Template | Target location |
 |----------|-----------------|

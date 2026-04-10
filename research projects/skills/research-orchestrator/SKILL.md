@@ -13,14 +13,14 @@ description: >-
 
 ## When to use
 
-- You own **one** folder `research projects/.../{task-tldr}/{sub-task}/`.
+- You own **one** folder `outputs/{research-project-x}/{task-tldr}/{sub-task}/`.
 - You run on **`$ControlPlaneModel$`** (this session). You coordinate **workers** and **validators** via **delegated agent runs** only (subagent, child session, or host equivalent). **Workers** use models from **`$ModelsForThisTask$`** (vary per slot). **Every validator** child must be launched with **`$ControlPlaneModel$`**, not the worker’s model. Launch **workers in parallel** across independent slots when the host supports it; **within** each **(prompt, worker model, copy)** slot, run **worker** then **validator** **sequentially**. This repo does not call LLM APIs from Python.
 
 ## Preconditions
 
 - Read [RESEARCH_PROTOCOL.md](../../RESEARCH_PROTOCOL.md) and [docs/ROLE_BINDING.md](../../docs/ROLE_BINDING.md).
 - Read task-level `USER_PROMPT.md` (including **Approved search terms (Stage I)** and **Deliverable constraints**), `TODO.md`, `TOOLS_AND_MCP.md`, and hyperparameters — especially **`$ControlPlaneModel$`** and **`$ModelsForThisTask$`**.
-- **Pre-flight (before first worker delegation):** If **`TOOLS_AND_MCP.md`** lacks a filled **`$ControlPlaneModel$`** or at least one **`$ModelsForThisTask$`** entry, or MCP/tools listed there do not cover what this mission requires (and gaps are not documented with user approval), **stop and ask the user**. If **`USER_PROMPT.md`** has no **Deliverable constraints** section with a defined report length/depth **and** no explicit waiver (e.g. protocol default), **stop and ask** before generating prompt variants.
+- **Pre-flight (before first worker delegation):** Satisfy [Stage II readiness gates](../../RESEARCH_PROTOCOL.md#stage-ii-readiness-gates) and [Delegation requirement](../../RESEARCH_PROTOCOL.md#delegation-requirement). If the **original prompt** did **not** ask to skip delegation, you **must** delegate workers and validators (this skill); do **not** collapse into inline synthesis. If **`TOOLS_AND_MCP.md`** lacks **verbatim** **`$ControlPlaneModel$`** and **`$ModelsForThisTask$`** strings, **logged user confirmation** of those IDs, or MCP/tools coverage (with documented user-approved gaps), **stop and ask**. If **Deliverable constraints** lack length/depth from the **original prompt**, from your **ask**, or from a **user-confirmed** protocol default, **stop and ask** before generating prompt variants.
 - Ensure `workers/` and `validators/` subfolders exist under this `{sub-task}`.
 
 ## Prompt variants (deduplication)
@@ -38,7 +38,7 @@ Host isolation: [HOST_TOOLS](../../docs/HOST_TOOLS.md).
 
 ## Logging
 
-- **Task-level** (`{task-tldr}/`): **`resolve_task_execution_log`**, then **`render_execution_record`** + **`append_execution_record`** for each child **START** / **END**. Field contract: [RESEARCH_PROTOCOL — `{task-tldr}`](../../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet); API names: [Helper APIs](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis-research_utils). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
+- **Task-level** (`outputs/{research-project-x}/{task-tldr}/`): **`resolve_task_execution_log`** (canonical **`log_YYYY-MM-DD_HHMMSS.txt`** only; no **`execution_log_active.txt`**), then **`render_execution_record`** + **`append_execution_record`** for each child **START** / **END**. Field contract: [RESEARCH_PROTOCOL — `{task-tldr}`](../../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet); API names: [Helper APIs](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis-research_utils). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
 - **Sub-task:** `orchestrator_log.md` (narrative, variants, worker/validator counts), `orchestrator_responses.md` (prompt → validated pairs), optional `orchestrator_meta.json`.
 
 ## Decision rules

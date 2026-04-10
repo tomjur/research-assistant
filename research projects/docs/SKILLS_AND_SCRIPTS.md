@@ -1,6 +1,6 @@
 # Skills and shared scripts
 
-Where skills and Python helpers live, how to add them, and how they relate to the protocol. **Roles and delegation preambles:** [ROLE_BINDING.md](ROLE_BINDING.md). **Stages and filesystem layout:** [RESEARCH_PROTOCOL.md](../RESEARCH_PROTOCOL.md).
+Where skills and Python helpers live, how to add them, and how they relate to the protocol.
 
 ## Where skills live
 
@@ -32,8 +32,8 @@ Orchestrators should call these helpers instead of reimplementing string rules. 
 Caps and full workflow: [RESEARCH_PROTOCOL.md](../RESEARCH_PROTOCOL.md). Import path / pytest: [HOST_TOOLS.md](HOST_TOOLS.md#python).
 
 - **`prompt_variants`:** `try_add_unique`, `collect_unique_prompts`, `prompt_fingerprint`, **`variant_collection_should_stop`** — [Stage II — step 1](../RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask).
-- **`task_graph_waves`:** `execution_waves`, `topological_order`, `waves_from_task_graph_json` — [Stage I — step 6](../RESEARCH_PROTOCOL.md#planning-and-handoff); skill [research-task-graph-waves/SKILL.md](../skills/research-task-graph-waves/SKILL.md); CLI: `python -m research_utils.task_graph_waves`.
-- **`execution_log`:** `resolve_task_execution_log`, `render_execution_record`, `append_execution_record` — task-level **`log_{datetime}.txt`** / **`execution_log_active.txt`** — [RESEARCH_PROTOCOL — `{task-tldr}`](../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet).
+- **`task_graph_waves`:** `execution_waves`, `topological_order`, `waves_from_task_graph_json` — [Stage I — step 6](../RESEARCH_PROTOCOL.md#planning-and-handoff); skill [research-task-graph-waves/SKILL.md](../skills/research-task-graph-waves/SKILL.md); CLI: `python -m research_utils.task_graph_waves --file path/to/TASK_GRAPH.json` (see skill).
+- **`execution_log`:** `resolve_task_execution_log`, `render_execution_record`, `append_execution_record`, `format_log_filename`, `CANONICAL_LOG_PATTERN` — single task-level **`log_YYYY-MM-DD_HHMMSS.txt`** (UTC) in **`outputs/{research-project-x}/{task-tldr}/`**; no pointer file — [RESEARCH_PROTOCOL — Filesystem structure](../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet).
 
 ## Tests and TDD
 
