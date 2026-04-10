@@ -5,7 +5,7 @@ Copy files from this folder when starting `outputs/{project}/{task-tldr}/` at th
 | Template | Target location |
 |----------|-----------------|
 | [USER_PROMPT.md](USER_PROMPT.md) | `{task-tldr}/USER_PROMPT.md` |
-| (at Stage II) | Task-level log: [RESEARCH_PROTOCOL — `{task-tldr}`](../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet); [Helper APIs](../docs/SKILLS_AND_SCRIPTS.md#helper-apis-research_utils) |
+| (at Stage II) | Task-level log: [RESEARCH_PROTOCOL — `{task-tldr}`](../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet); [Helper APIs](../docs/SKILLS_AND_SCRIPTS.md#helper-apis) |
 | [TODO.md](TODO.md) | `{task-tldr}/TODO.md` |
 | [TOOLS_AND_MCP.md](TOOLS_AND_MCP.md) | `{task-tldr}/TOOLS_AND_MCP.md` |
 | [HYPERPARAMETERS.md](HYPERPARAMETERS.md) | `{task-tldr}/HYPERPARAMETERS.md` (optional if merged into tools doc) |

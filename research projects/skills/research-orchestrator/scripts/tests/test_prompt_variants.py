@@ -1,6 +1,6 @@
 import pytest
 
-from research_utils.prompt_variants import (
+from prompt_variants import (
     collect_unique_prompts,
     normalize_for_dedup,
     prompt_fingerprint,

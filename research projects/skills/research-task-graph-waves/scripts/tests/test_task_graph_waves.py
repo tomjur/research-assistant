@@ -6,11 +6,26 @@ from pathlib import Path
 
 import pytest
 
-from research_utils.task_graph_waves import (
+from task_graph_waves import (
     execution_waves,
     topological_order,
     waves_from_task_graph_json,
 )
+
+
+def _repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for d in [p, *p.parents]:
+        if (d / "pyproject.toml").is_file():
+            return d
+    raise RuntimeError("pyproject.toml not found from test file")
+
+
+def _all_skill_scripts_pythonpath() -> str:
+    root = _repo_root()
+    skills = root / "research projects" / "skills"
+    dirs = sorted(p for p in skills.glob("*/scripts") if p.is_dir())
+    return os.pathsep.join(str(p) for p in dirs)
 
 
 def test_linear_chain_waves() -> None:
@@ -127,18 +142,17 @@ def test_waves_from_task_graph_json_completed() -> None:
     assert out["remaining_node_ids"] == ["b"]
 
 
-def test_cli_stdin_json(tmp_path: Path) -> None:
-    script_dir = Path(__file__).resolve().parents[1]
+def test_cli_stdin_json() -> None:
     payload = json.dumps(
         {"nodes": [{"id": "x"}], "edges": [], "completed": []}
     )
-    env = {**os.environ, "PYTHONPATH": str(script_dir)}
+    env = {**os.environ, "PYTHONPATH": _all_skill_scripts_pythonpath()}
     proc = subprocess.run(
-        [sys.executable, "-m", "research_utils.task_graph_waves"],
+        [sys.executable, "-m", "task_graph_waves"],
         input=payload,
         capture_output=True,
         text=True,
-        cwd=str(script_dir.parent.parent),
+        cwd=str(_repo_root()),
         env=env,
         check=False,
     )

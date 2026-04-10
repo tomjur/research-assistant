@@ -170,7 +170,7 @@ def _main(argv: list[str]) -> int:
     if len(argv) > 2 and argv[1] == "--file":
         path = argv[2]
     elif len(argv) > 1:
-        print("usage: python -m research_utils.task_graph_waves [--file path.json]", file=sys.stderr)
+        print("usage: python -m task_graph_waves [--file path.json]", file=sys.stderr)
         return 2
 
     if path:

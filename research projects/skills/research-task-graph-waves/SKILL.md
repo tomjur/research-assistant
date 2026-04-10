@@ -37,12 +37,13 @@ Write **`TASK_GRAPH.json`** in the task folder (`outputs/{research-project-x}/{t
 
 ## Python
 
-**API:** [Helper APIs — `task_graph_waves`](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis-research_utils). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
+**API:** [Helper APIs — `task_graph_waves`](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
 
-**CLI (JSON in, JSON out):** from repository root, set **`PYTHONPATH="research projects/scripts"`**, then run **`python -m research_utils.task_graph_waves --file`** with the path to this task’s **`TASK_GRAPH.json`** (under **`outputs/<project>/<task-tldr>/`**).
+**CLI (JSON in, JSON out):** from repository root, set **`PYTHONPATH`** to every `research projects/skills/*/scripts` (same as pytest — [HOST_TOOLS](../../docs/HOST_TOOLS.md#python)), then **`python -m task_graph_waves --file`** with this task’s **`TASK_GRAPH.json`**.
 
 ```bash
-PYTHONPATH="research projects/scripts" python -m research_utils.task_graph_waves --file outputs/<project>/<task-tldr>/TASK_GRAPH.json
+export PYTHONPATH="$(python3 -c "from pathlib import Path; import os; r=Path('research projects/skills'); print(os.pathsep.join(str(p) for p in sorted(r.glob('*/scripts')) if p.is_dir()))")"
+python3 -m task_graph_waves --file outputs/<project>/<task-tldr>/TASK_GRAPH.json
 ```
 
 ## Agent workflow

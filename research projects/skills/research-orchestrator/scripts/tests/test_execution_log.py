@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from pathlib import Path
 
-from research_utils.execution_log import (
+from execution_log import (
     CANONICAL_LOG_PATTERN,
     append_execution_record,
     format_log_filename,

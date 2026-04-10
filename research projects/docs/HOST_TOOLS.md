@@ -13,19 +13,21 @@ This repository is **host-agnostic**: no required `.cursor/` or `.claude/` direc
 
 ## Python
 
-**Canonical commands** (repository root; virtual environment optional):
+From repository root (venv optional):
 
 ```bash
 python3.11 -m venv .venv && .venv/bin/pip install pytest && .venv/bin/python -m pytest
 ```
 
-`pythonpath` and `testpaths` are set in [pyproject.toml](../../pyproject.toml). To import helpers in a one-off script:
+[`pyproject.toml`](../../pyproject.toml) + root [`conftest.py`](../../conftest.py): tests under `research projects/skills`, every `skills/*/scripts` on `sys.path`. **Ad hoc** (same path list):
 
 ```bash
-PYTHONPATH="research projects/scripts" python -c "from research_utils.prompt_variants import try_add_unique; ..."
+export PYTHONPATH="$(python3 -c "from pathlib import Path; import os; r=Path('research projects/skills'); print(os.pathsep.join(str(p) for p in sorted(r.glob('*/scripts')) if p.is_dir())))"
 ```
 
-**TDD:** New or changed behavior under `research projects/scripts/` needs **pytest** coverage — requirement and rationale: [SKILLS_AND_SCRIPTS.md § Tests and TDD](SKILLS_AND_SCRIPTS.md#tests-and-tdd).
+Windows: join the same `…/skills/*/scripts` paths with `;`, or run the `python -c` line under `cmd` / PowerShell and set `PYTHONPATH` to its output.
+
+Helpers, layout, TDD: [SKILLS_AND_SCRIPTS.md](SKILLS_AND_SCRIPTS.md).
 
 ## No in-repo LLM API
 

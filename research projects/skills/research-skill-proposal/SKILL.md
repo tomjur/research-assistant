@@ -10,7 +10,7 @@ description: >-
 ## When to use
 
 - Any agent role (planning, orchestrator, worker, validator) notices behavior that could apply **across multiple** research tasks or domains.
-- **Before** creating files under `research projects/skills/` or `research projects/scripts/` or changing MCP config.
+- **Before** creating files under `research projects/skills/` (including any skill’s `scripts/`) or changing MCP config.
 
 ## When not to use
 
@@ -36,5 +36,5 @@ description: >-
 ## After approval
 
 - Add or update `SKILL.md` under `research projects/skills/<name>/` with frontmatter `name` and `description`.
-- If code: place helpers under `research projects/scripts/research_utils/` (or a dedicated subdirectory) and add **tests** (see [docs/SKILLS_AND_SCRIPTS.md](../../docs/SKILLS_AND_SCRIPTS.md)).
+- If code: add `research projects/skills/<name>/scripts/<module>.py` and **tests** under `scripts/tests/`. Root [`conftest.py`](../../../conftest.py) adds every `skills/*/scripts` for pytest (see [docs/SKILLS_AND_SCRIPTS.md](../../docs/SKILLS_AND_SCRIPTS.md)).
 - If the skill is part of the **default workflow**, add or update its row under **Fundamental skills** in [docs/SKILLS_AND_SCRIPTS.md](../../docs/SKILLS_AND_SCRIPTS.md).

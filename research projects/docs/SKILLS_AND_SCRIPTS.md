@@ -1,4 +1,4 @@
-# Skills and shared scripts
+# Skills and scripts
 
 Where skills and Python helpers live, how to add them, and how they relate to the protocol.
 
@@ -16,33 +16,27 @@ Where skills and Python helpers live, how to add them, and how they relate to th
 
 ## Delegate deterministic work to Python
 
-Prefer **shared helpers** for logic that should be stable and testable: normalization, deduplication keys, caps, parsing, and similar. Keep that behavior out of long prose in skills when a function is clearer. **Patterns:** skill markdown invokes `research_utils` (see [HOST_TOOLS.md](HOST_TOOLS.md#python) for `PYTHONPATH`); delegated children get preamble + skill path per [ROLE_BINDING.md](ROLE_BINDING.md).
+Prefer **helpers** for logic that should be stable and testable (normalization, deduplication, caps, parsing). Import top-level modules by name (e.g. `task_graph_waves`, `prompt_variants`) after setting `PYTHONPATH` per [HOST_TOOLS.md](HOST_TOOLS.md#python). Delegated children get preamble + skill path per [ROLE_BINDING.md](ROLE_BINDING.md).
 
 ## Where scripts live
 
-- **Shared code:** `research projects/scripts/research_utils/` (import as `research_utils.*`).
-- **Tests:** `research projects/scripts/tests/` (e.g. `test_*.py`).
+Helpers are **`research projects/skills/<skill-name>/scripts/<module>.py`**; tests in **`scripts/tests/test_*.py`**. **pytest** prepends every `skills/*/scripts` via root [`conftest.py`](../../conftest.py). For ad hoc Python, set `PYTHONPATH` to those same dirs (see [HOST_TOOLS.md](HOST_TOOLS.md#python)).
 
-Orchestrators should call these helpers instead of reimplementing string rules. **Concrete entry points** (canonical reference for names and usage):
+<a id="helper-apis"></a>
 
-<a id="helper-apis-research_utils"></a>
+### Helper APIs
 
-### Helper APIs (research_utils)
+Caps and workflow: [RESEARCH_PROTOCOL.md](../RESEARCH_PROTOCOL.md). Run / import: [HOST_TOOLS.md](HOST_TOOLS.md#python).
 
-Caps and full workflow: [RESEARCH_PROTOCOL.md](../RESEARCH_PROTOCOL.md). Import path / pytest: [HOST_TOOLS.md](HOST_TOOLS.md#python).
-
-- **`prompt_variants`:** `try_add_unique`, `collect_unique_prompts`, `prompt_fingerprint`, **`variant_collection_should_stop`** — [Stage II — step 1](../RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask).
-- **`task_graph_waves`:** `execution_waves`, `topological_order`, `waves_from_task_graph_json` — [Stage I — step 6](../RESEARCH_PROTOCOL.md#planning-and-handoff); skill [research-task-graph-waves/SKILL.md](../skills/research-task-graph-waves/SKILL.md); CLI: `python -m research_utils.task_graph_waves --file path/to/TASK_GRAPH.json` (see skill).
-- **`execution_log`:** `resolve_task_execution_log`, `render_execution_record`, `append_execution_record`, `format_log_filename`, `CANONICAL_LOG_PATTERN` — single task-level **`log_YYYY-MM-DD_HHMMSS.txt`** (UTC) in **`outputs/{research-project-x}/{task-tldr}/`**; no pointer file — [RESEARCH_PROTOCOL — Filesystem structure](../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet).
+- **`prompt_variants`:** `try_add_unique`, `collect_unique_prompts`, `prompt_fingerprint`, **`variant_collection_should_stop`** — [Stage II — step 1](../RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask); [orchestrator `scripts/`](../skills/research-orchestrator/scripts/).
+- **`task_graph_waves`:** `execution_waves`, `topological_order`, `waves_from_task_graph_json` — [Stage I — step 6](../RESEARCH_PROTOCOL.md#planning-and-handoff); [research-task-graph-waves/SKILL.md](../skills/research-task-graph-waves/SKILL.md); CLI: `python -m task_graph_waves --file path/to/TASK_GRAPH.json`.
+- **`execution_log`:** `resolve_task_execution_log`, `render_execution_record`, `append_execution_record`, `format_log_filename`, `CANONICAL_LOG_PATTERN` — task-level **`log_YYYY-MM-DD_HHMMSS.txt`** (UTC) in **`outputs/{research-project-x}/{task-tldr}/`** — [RESEARCH_PROTOCOL — Filesystem structure](../RESEARCH_PROTOCOL.md#filesystem-structure); [orchestrator `scripts/`](../skills/research-orchestrator/scripts/).
 
 ## Tests and TDD
 
-- **Requirement:** New or changed behavior under `scripts/` should come with **pytest** coverage in `research projects/scripts/tests/`.
-- **Run, venv, `PYTHONPATH`:** [HOST_TOOLS.md](HOST_TOOLS.md#python) (paths and `pythonpath` in [pyproject.toml](../../pyproject.toml)).
+New or changed `scripts/*.py` behavior needs **pytest** under that skill’s `scripts/tests/`. Collection is recursive under `research projects/skills/` ([`pyproject.toml`](../../pyproject.toml)); paths come from [`conftest.py`](../../conftest.py).
 
 ## Fundamental skills (default workflow)
-
-These are the **curated** skills that implement the default Stages I–II research roles and the process for extending the framework. Other skills may exist under `skills/` without being listed here until you promote them.
 
 | Role / use | Skill |
 |------------|--------|

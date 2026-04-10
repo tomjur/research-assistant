@@ -25,7 +25,7 @@ description: >-
 
 ## Prompt variants (deduplication)
 
-Follow [RESEARCH_PROTOCOL — Orchestrator algorithm](../../RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask) step 1. Use **`research_utils.prompt_variants`** (`try_add_unique` / `collect_unique_prompts`, **`variant_collection_should_stop`**) per [Helper APIs](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis-research_utils). On later refinement rounds, add only **new** keys; keep approved terms in every variant.
+Follow [RESEARCH_PROTOCOL — Orchestrator algorithm](../../RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask) step 1. Use **`prompt_variants`** (`try_add_unique` / `collect_unique_prompts`, **`variant_collection_should_stop`**) per [Helper APIs](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis). On later refinement rounds, add only **new** keys; keep approved terms in every variant.
 
 ## Fan-out pattern
 
@@ -38,7 +38,7 @@ Host isolation: [HOST_TOOLS](../../docs/HOST_TOOLS.md).
 
 ## Logging
 
-- **Task-level** (`outputs/{research-project-x}/{task-tldr}/`): **`resolve_task_execution_log`** (canonical **`log_YYYY-MM-DD_HHMMSS.txt`** only; no **`execution_log_active.txt`**), then **`render_execution_record`** + **`append_execution_record`** for each child **START** / **END**. Field contract: [RESEARCH_PROTOCOL — `{task-tldr}`](../../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet); API names: [Helper APIs](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis-research_utils). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
+- **Task-level** (`outputs/{research-project-x}/{task-tldr}/`): **`resolve_task_execution_log`** (canonical **`log_YYYY-MM-DD_HHMMSS.txt`** only; no **`execution_log_active.txt`**), then **`render_execution_record`** + **`append_execution_record`** for each child **START** / **END**. Field contract: [RESEARCH_PROTOCOL — `{task-tldr}`](../../RESEARCH_PROTOCOL.md#filesystem-structure) (Execution log bullet); API names: [Helper APIs](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
 - **Sub-task:** `orchestrator_log.md` (narrative, variants, worker/validator counts), `orchestrator_responses.md` (prompt → validated pairs), optional `orchestrator_meta.json`.
 
 ## Decision rules
