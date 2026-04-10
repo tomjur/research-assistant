@@ -1,0 +1,8 @@
+---
+description: Follow root AGENTS.md for repo workflow
+alwaysApply: true
+---
+
+Follow `AGENTS.md` at the project root.
+
+@AGENTS.md

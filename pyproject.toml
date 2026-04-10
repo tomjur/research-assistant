@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-assitant"
+version = "0.0.0"
+description = "Research automation helpers (local scripts)"
+readme = "AGENTS.md"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["research projects/scripts/tests"]
+pythonpath = ["research projects/scripts"]
