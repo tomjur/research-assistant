@@ -35,7 +35,7 @@ Use the canonical layout in [templates/worker.example.md](../../templates/worker
 - **Sources:** Prefer primary / official / peer-reviewed when appropriate; every non-obvious claim → **Sources** or **Gaps / uncertainty**.
 - **Related-work sections:** Extract **sourced** leads (Related work, Background, Bibliography, etc.); out-of-scope but mission-relevant → **Gaps / uncertainty** for orchestrator [propagation / replan](../../RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask) ([ROLE_BINDING](../../docs/ROLE_BINDING.md)).
 - **Links:** Do **not** claim HTTP verification unless you fetched; validator checks.
-- **Reusable workflows:** [research-skill-proposal/SKILL.md](../research-skill-proposal/SKILL.md) — no silent new skills.
+- **Discovered skills:** After primary artifact, [Stage II reflection](../../docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection).
 
 ## After writing
 

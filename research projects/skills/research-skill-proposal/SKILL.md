@@ -1,39 +1,32 @@
 ---
 name: research-skill-proposal
 description: >-
-  Structures a user approval request before adding a new skill, script, or MCP
-  based on observed repeatable behavior. Requires evidence appendix and self-review.
+  Implements an approved shared skill, script, or MCP change under research projects/skills/.
+  Primary entry: after Stage III user approval per DISCOVERED_SKILLS_FLOW; secondary: explicit user request.
 ---
 
 # Research — Skill / tool / MCP proposal
 
+**Discovery pipeline:** [docs/DISCOVERED_SKILLS_FLOW.md](../../docs/DISCOVERED_SKILLS_FLOW.md). This skill = **implement** after Stage III approval or an **explicit** user request (not routine Stage II asks).
+
 ## When to use
 
-- Any agent role (planning, orchestrator, worker, validator) notices behavior that could apply **across multiple** research tasks or domains.
-- **Before** creating files under `research projects/skills/` (including any skill’s `scripts/`) or changing MCP config.
+- **Primary:** User approved a candidate in [Stage III consolidation](../../docs/DISCOVERED_SKILLS_FLOW.md#stage-iii-consolidation).
+- **Secondary:** User explicitly asked for a shared skill/script/MCP change outside that flow.
+
+Do **not** edit `research projects/skills/` (or MCP config) without that approval.
 
 ## When not to use
 
-- One-off wording, a single paper’s quirks, or a unique user preference for **this** task only → log in `TODO.md` or orchestrator notes instead.
+- Task-only quirks → `TODO.md` / orchestrator notes.
+- Stage II drafting only → [Stage II reflection](../../docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection), not this skill.
 
-## Steps
+## Before implementing
 
-1. **Draft evidence appendix** (in chat or `PROPOSAL_DRAFT.md` under the task folder):
-   - **Example A** — concrete snippet / path / situation.
-   - **Example B** — a second, independent instance.
-   - **Why one-off fixes fail** — 2–3 sentences.
-   - **Reuse plan** — where the skill would live (`research projects/skills/...`), trigger phrases, and what it would **not** cover.
-2. **Re-read** the appendix. If you cannot honestly say “this will recur,” **stop** — no user question.
-3. **Ask the user** with this structure:
+1. Evidence: use approved draft from `discovered-skills/` / `APPROVAL_LOG.md` (add appendix if missing: two instances, why not one-off, reuse plan).
+2. **Change type:** new skill | new script | new MCP | extend existing.
 
-   - **Proposal title**
-   - **Change type**: new skill | new script | new MCP | extend existing
-   - **Evidence appendix** (paste)
-   - **Exact question**: “May I add this to the shared research framework?”
-
-4. **Wait** for approval before writing shared assets.
-
-## After approval
+## Implementation (after approval)
 
 - Add or update `SKILL.md` under `research projects/skills/<name>/` with frontmatter `name` and `description`.
 - If code: add `research projects/skills/<name>/scripts/<module>.py` and **tests** under `scripts/tests/`. Root [`conftest.py`](../../../conftest.py) adds every `skills/*/scripts` for pytest (see [docs/SKILLS_AND_SCRIPTS.md](../../docs/SKILLS_AND_SCRIPTS.md)).

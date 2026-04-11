@@ -13,6 +13,7 @@ Notation: **`$X$`** names a hyperparameter; the prose after it explains its role
 | [docs/SKILLS_AND_SCRIPTS.md](docs/SKILLS_AND_SCRIPTS.md) | **Canonical** curated skills table, Python helper index, TDD policy, how to add skills |
 | [docs/ROLE_BINDING.md](docs/ROLE_BINDING.md) | **Invocation-scoped roles**, anti-loop rules, delegation preambles |
 | [docs/HOST_TOOLS.md](docs/HOST_TOOLS.md) | Host context files, delegation, **pytest** / `PYTHONPATH` (commands are canonical here) |
+| [docs/DISCOVERED_SKILLS_FLOW.md](docs/DISCOVERED_SKILLS_FLOW.md) | `discovered-skills/` drafts; Stage II reflection; Stage III consolidation |
 
 ---
 
@@ -62,6 +63,7 @@ Paths below are relative to the **repository root** unless stated otherwise.
 
 - **Save:** the user’s prompt, **Stage I approved search terms** (same artifact as the prompt — see [Stage I](#stage-i--initial-planning)), the generated TODO list, **`TASK_GRAPH.json`** (directed acyclic subgoal graph and optional `completed` ids), the final consolidated response.
 - **Save:** `TOOLS_AND_MCP.md` (and optionally `MODELS.md`) listing skills, tools, MCP servers, and models relevant to **this** task.
+- **`discovered-skills/`** (optional): draft **proposals only** for reusable skills/scripts/MCP ideas from Stage II — **not** canonical shared skills. Normative flow: [docs/DISCOVERED_SKILLS_FLOW.md](docs/DISCOVERED_SKILLS_FLOW.md).
 - **Execution log:** One append-only canonical **`log_*.txt`** (UTC) in this folder; use **`execution_log`** ([Helper APIs](docs/SKILLS_AND_SCRIPTS.md#helper-apis)) for open/append. Log **START** / **END** for each worker and validator run. **Each record:** task graph **id**, subtask folder name, child **prompt**, **artifact paths**, **status** (success / failed / cancelled; one-line **reason** if failed), **prompt hash**, **worker model**, **copy**, **`$ControlPlaneModel$`** on validators, optional host run id; full **response** text stays in **`workers/`** / **`validators/`** only. Without Python, match the block shape those helpers produce.
 
 **`outputs/{research-project-x}/{task-tldr}/{sub-task}/`** — one folder per **orchestrator** line item from the TODO.
@@ -163,13 +165,10 @@ After **all** orchestrators finish:
 1. **Compile** one final answer for the user (executive summary, evidence map, open questions), respecting **Deliverable constraints** in **`USER_PROMPT.md`** (length/depth or agreed default). If **related-work** or **replan** escalations remain **pending** (e.g. user deferred Stage I updates), include them in **open questions**.
 2. Write **`FINAL_RESPONSE.md`** in **`outputs/{research-project-x}/{task-tldr}/`**.
 3. Ensure required artifacts exist with the fields described under **`workers/` and `validators/`** and **`{sub-task}`** in [Filesystem structure](#filesystem-structure) (orchestrator: subtask text, prompts, worker counts, prompt/response record).
+4. **[Discovered-skills consolidation](docs/DISCOVERED_SKILLS_FLOW.md#stage-iii-consolidation):** Run it or record **N/A** (no `proposed-*.md`). Default: after step 2.
 
 ---
 
-## Auto-detection of skills, tools, and MCP
+## Reusable skills, tools, and MCP
 
-Any agent (orchestrator, worker, or validator) that notices behavior that would **generalize** across multiple research contexts must:
-
-1. Draft an **evidence appendix**: at least **two** concrete instances from the current task, why a one-off fix is insufficient, and how reuse would work.
-2. **Re-read** the evidence; if it is **not** general, **do not** ask the user — log a one-off note in `TODO.md` or the orchestrator log.
-3. If still general, follow **[skills/research-skill-proposal/SKILL.md](skills/research-skill-proposal/SKILL.md)** and **ask the user** for approval before adding a skill, script, or MCP — include the evidence in the question.
+[docs/DISCOVERED_SKILLS_FLOW.md](docs/DISCOVERED_SKILLS_FLOW.md) — Stage II reflection, Stage III consolidation, **research-skill-proposal** for implementation; optional direct **research-skill-proposal** when the user explicitly requests an out-of-band shared change.

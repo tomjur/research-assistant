@@ -51,10 +51,8 @@ Align with **VERIFICATION_STANCE** in [`DELEGATION_PREAMBLE_VALIDATOR`](../../do
 
 Use [templates/validator.example.md](../../templates/validator.example.md) (front matter, **Validated response**, **Validator changelog**, **Grounding notes**).
 
+After the validator artifact is written: [Stage II reflection](../../docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection).
+
 ## Failure path
 
 - If **nothing** can be grounded (`validation_status: failed`), still write the file and return a concise reason list so the orchestrator can **ask the user** next steps.
-
-## Skill proposals
-
-If validation keeps failing for a **repeatable** class of issues (e.g. same domain always paywalled), consider [research-skill-proposal/SKILL.md](../research-skill-proposal/SKILL.md) after evidence review.

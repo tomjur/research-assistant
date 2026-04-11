@@ -10,7 +10,7 @@ Where skills and Python helpers live, how to add them, and how they relate to th
 
 ## How to add or change a skill
 
-1. If the change is **repeatable across tasks**, follow [research-skill-proposal/SKILL.md](../skills/research-skill-proposal/SKILL.md): evidence appendix, user approval, then implement.
+1. Repeatable across tasks: [DISCOVERED_SKILLS_FLOW](DISCOVERED_SKILLS_FLOW.md) ([Stage II](DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection) → [Stage III](DISCOVERED_SKILLS_FLOW.md#stage-iii-consolidation) → [research-skill-proposal](../skills/research-skill-proposal/SKILL.md)). Out-of-band: **research-skill-proposal** after explicit user approval only.
 2. Add or update `SKILL.md` under `research projects/skills/<name>/`.
 3. If the skill is part of the **default protocol workflow** (Stage I, orchestration trio, or meta-skill for proposals), add or update a row in **Fundamental skills** below. **Ad-hoc** skills do not need to be listed there.
 
@@ -45,6 +45,6 @@ New or changed `scripts/*.py` behavior needs **pytest** under that skill’s `sc
 | Orchestrator (one subtask) | [research-orchestrator/SKILL.md](../skills/research-orchestrator/SKILL.md) |
 | Worker | [research-worker/SKILL.md](../skills/research-worker/SKILL.md) |
 | Validator | [research-validator/SKILL.md](../skills/research-validator/SKILL.md) |
-| Proposing new skills, scripts, or MCP | [research-skill-proposal/SKILL.md](../skills/research-skill-proposal/SKILL.md) |
+| Implementing approved skills, scripts, or MCP (after Stage III or explicit user request) | [research-skill-proposal/SKILL.md](../skills/research-skill-proposal/SKILL.md) |
 
 For **which session may use which skill**, see [ROLE_BINDING.md](ROLE_BINDING.md). Repo index: [AGENTS.md](../../AGENTS.md).

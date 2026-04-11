@@ -31,8 +31,8 @@ Follow [RESEARCH_PROTOCOL — Orchestrator algorithm](../../RESEARCH_PROTOCOL.md
 
 For each **unique prompt** × **worker model** in **`$ModelsForThisTask$`** × **copy** `1..$WorkersPerTask$`, form a **slot**; parallelize **starting** workers across slots when the host allows.
 
-1. **Worker:** `DELEGATION_PREAMBLE_WORKER` from [ROLE_BINDING](../../docs/ROLE_BINDING.md) + [research-worker/SKILL.md](../research-worker/SKILL.md). Child runs on that slot’s **worker** model (not **`$ControlPlaneModel$`** unless also in the worker pool). Pass prompt, copy, output path `workers/worker-{model}-{copy}-{promptHash}.md` ([Filesystem structure](../../RESEARCH_PROTOCOL.md#filesystem-structure)), and `SHARED_CONTEXT.md` if present.
-2. **Validator (same slot, after worker):** Launch on **`$ControlPlaneModel$`**. `DELEGATION_PREAMBLE_VALIDATOR` + [research-validator/SKILL.md](../research-validator/SKILL.md); output `validators/validator-{worker-model}-{copy}-{promptHash}.md`. Do not interleave validators ahead of unrelated workers.
+1. **Worker:** `DELEGATION_PREAMBLE_WORKER` from [ROLE_BINDING](../../docs/ROLE_BINDING.md) + [research-worker/SKILL.md](../research-worker/SKILL.md). Set **`TASK_ROOT`** to this `{sub-task}/`’s parent (`outputs/.../{task-tldr}/`). Child runs on that slot’s **worker** model (not **`$ControlPlaneModel$`** unless also in the worker pool). Pass prompt, copy, output path `workers/worker-{model}-{copy}-{promptHash}.md` ([Filesystem structure](../../RESEARCH_PROTOCOL.md#filesystem-structure)), and `SHARED_CONTEXT.md` if present.
+2. **Validator (same slot, after worker):** Launch on **`$ControlPlaneModel$`**. `DELEGATION_PREAMBLE_VALIDATOR` + [research-validator/SKILL.md](../research-validator/SKILL.md); same **`TASK_ROOT`**; output `validators/validator-{worker-model}-{copy}-{promptHash}.md`. Do not interleave validators ahead of unrelated workers.
 
 Host isolation: [HOST_TOOLS](../../docs/HOST_TOOLS.md).
 
@@ -54,6 +54,6 @@ Host isolation: [HOST_TOOLS](../../docs/HOST_TOOLS.md).
 - **New subgoals from related work:** When validated output implies **additional tasks** elsewhere in the mission, record the leads in **`orchestrator_log.md`** and **`SHARED_CONTEXT.md`** only if they still inform **this** subtask’s remaining runs; **ask the user** whether to run **Stage I replan** (director updates **`TODO.md`** / **`TASK_GRAPH.json`** / waves). **Do not** edit the graph or TODO for new tasks from this role.
 - If propagation or escalation would **guess** user intent, **ask the user** first.
 
-## Skills / tooling proposals
+## Discovered skills
 
-If you identify **general** reusable behavior, follow [research-skill-proposal/SKILL.md](../research-skill-proposal/SKILL.md) before editing shared skills.
+[Stage II reflection](../../docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection) (same as worker/validator) after primary outputs.

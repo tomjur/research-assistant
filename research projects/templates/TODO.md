@@ -17,4 +17,5 @@ Hyperparameters: `HYPERPARAMETERS.md` or `TOOLS_AND_MCP.md` (definitions: [Hyper
 ## After Stage III
 
 - [ ] `FINAL_RESPONSE.md` written
+- [ ] Discovered-skills consolidation per [DISCOVERED_SKILLS_FLOW.md](../docs/DISCOVERED_SKILLS_FLOW.md) (or **N/A** — no `proposed-*.md` files)
 - [ ] [Isolation](../RESEARCH_PROTOCOL.md#filesystem-structure): no cross-`{research-project-x}` citation

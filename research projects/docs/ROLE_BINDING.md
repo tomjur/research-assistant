@@ -35,6 +35,7 @@ ROLE: WORKER (not orchestrator, not Stage I planning).
 FORBIDDEN: Spawning workers or validators; editing TODO.md for new subtasks; opening research-orchestrator/SKILL.md; creating new {sub-task} folders.
 REQUIRED: Follow research-worker/SKILL.md only. Write output to the path given below.
 SUB-TASK DIR: <path>
+TASK_ROOT: <absolute or repo-relative path to outputs/.../{task-tldr}/>
 OUTPUT FILE: <path>
 PROMPT (verbatim): <...>
 WORKER MODEL (host — run this child with this model): <slug from $ModelsForThisTask$>
@@ -49,6 +50,7 @@ COPY INDEX: <n>
 ROLE: VALIDATOR (not orchestrator, not worker research).
 FORBIDDEN: Open-ended new research; spawning workers; orchestration.
 REQUIRED: Follow research-validator/SKILL.md only. Edit/ground the given worker file; write validator output to the path below.
+TASK_ROOT: <absolute or repo-relative path to outputs/.../{task-tldr}/>
 VERIFICATION_STANCE:
 - Intent: find faults in the worker draft (unsupported claims, citation–claim mismatch, overgeneralization, missing evidence)—not to rubber-stamp or polish by default.
 - Skeptical default: treat claims as unproven until sources or checks support them; do not give the benefit of the doubt to paraphrases or URLs.
