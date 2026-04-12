@@ -8,10 +8,6 @@ description: >-
 
 # Research — Validator
 
-## Role binding
-
-If you received **DELEGATION_PREAMBLE_VALIDATOR**, it **overrides** generic repo context. You are **not** an orchestrator or a research worker for **new** topics: do **not** delegate, do **not** spawn workers, and do **not** run open-ended fresh research. See [docs/ROLE_BINDING.md](../../docs/ROLE_BINDING.md).
-
 ## When to use
 
 - Immediately **after** a worker writes `workers/worker-{model}-{copy}-{promptHash}.md`.
@@ -26,7 +22,7 @@ If you received **DELEGATION_PREAMBLE_VALIDATOR**, it **overrides** generic repo
 
 ## Verification stance
 
-Align with **VERIFICATION_STANCE** in [`DELEGATION_PREAMBLE_VALIDATOR`](../../docs/ROLE_BINDING.md#delegation-preamble-validator) (fault-finding by **editing/grounding** this artifact only; preserve well-cited **related-work** leads; flag unverified).
+Align with **VERIFICATION_STANCE** in [`DELEGATION_PREAMBLE_VALIDATOR`](../../research%20projects/docs/ROLE_BINDING.md#delegation-preamble-validator) (fault-finding by **editing/grounding** this artifact only; preserve well-cited **related-work** leads; flag unverified).
 
 ## What you do
 
@@ -49,9 +45,9 @@ Align with **VERIFICATION_STANCE** in [`DELEGATION_PREAMBLE_VALIDATOR`](../../do
 
 ## Output shape
 
-Use [templates/validator.example.md](../../templates/validator.example.md) (front matter, **Validated response**, **Validator changelog**, **Grounding notes**).
+Use [templates/validator.example.md](../../research%20projects/templates/validator.example.md) (front matter, **Validated response**, **Validator changelog**, **Grounding notes**).
 
-After the validator artifact is written: [Stage II reflection](../../docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection).
+After the validator artifact is written: [Stage II reflection](../../research%20projects/docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection).
 
 ## Failure path
 

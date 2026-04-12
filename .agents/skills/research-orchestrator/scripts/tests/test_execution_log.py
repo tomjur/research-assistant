@@ -9,6 +9,7 @@ from execution_log import (
     format_log_filename,
     render_execution_record,
     resolve_task_execution_log,
+    utc_timestamp_iso,
 )
 
 
@@ -79,3 +80,84 @@ def test_legacy_pointer_ignored_new_canonical_created(tmp_path: Path) -> None:
     log = resolve_task_execution_log(tmp_path)
     assert log.is_file()
     assert CANONICAL_LOG_PATTERN.match(log.name)
+
+
+def test_utc_timestamp_iso_z_suffix() -> None:
+    s = utc_timestamp_iso(now=datetime(2026, 4, 9, 14, 30, 52, tzinfo=timezone.utc))
+    assert s == "2026-04-09T14:30:52Z"
+    assert s.endswith("Z")
+    assert ":" in s
+
+
+def test_render_roles_planning_subtask_host_subagent() -> None:
+    p = render_execution_record(
+        "2026-04-09T14:00:00Z",
+        "START",
+        "planning",
+        [("planning_phase", "stage1_initial"), ("trigger", "new_task")],
+    )
+    assert "--- 2026-04-09T14:00:00Z START planning ---" in p
+    assert "planning_phase: stage1_initial" in p
+
+    s = render_execution_record(
+        "2026-04-09T14:01:00Z",
+        "START",
+        "subtask",
+        [("task_id", "T1"), ("subtask_dir", "sub-foo"), ("wave", "0")],
+    )
+    assert "START subtask" in s
+    assert "subtask_dir: sub-foo" in s
+
+    h = render_execution_record(
+        "2026-04-09T14:02:00Z",
+        "END",
+        "host_subagent",
+        [
+            ("subagent_type", "explore"),
+            ("purpose", "Locate TASK_GRAPH usage"),
+            ("task_id", "T1"),
+        ],
+    )
+    assert "END host_subagent" in h
+    assert "subagent_type: explore" in h
+
+
+def test_typical_mission_sequence_append(tmp_path: Path) -> None:
+    log = tmp_path / "log_2026-04-09_140000.txt"
+    blocks = [
+        render_execution_record(
+            "2026-04-09T14:00:00Z",
+            "START",
+            "planning",
+            [("planning_phase", "stage1_initial")],
+        ),
+        render_execution_record(
+            "2026-04-09T14:05:00Z",
+            "END",
+            "planning",
+            [
+                ("planning_phase", "stage1_initial"),
+                ("todo_rows", "3"),
+                ("task_graph_nodes", "3"),
+                ("waves_computed", "yes"),
+            ],
+        ),
+        render_execution_record(
+            "2026-04-09T14:06:00Z",
+            "START",
+            "subtask",
+            [("task_id", "T1"), ("subtask_dir", "sub-a")],
+        ),
+        render_execution_record(
+            "2026-04-09T14:07:00Z",
+            "START",
+            "worker",
+            [("task_id", "T1"), ("subtask_dir", "sub-a"), ("prompt_hash", "abc12345")],
+        ),
+    ]
+    for b in blocks:
+        append_execution_record(log, b)
+    text = log.read_text(encoding="utf-8")
+    assert text.index("START planning") < text.index("END planning")
+    assert text.index("END planning") < text.index("START subtask")
+    assert text.index("START subtask") < text.index("START worker")

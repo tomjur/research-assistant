@@ -1,6 +1,6 @@
 # Research projects
 
-This directory holds the **research protocol**, **skills**, **scripts**, and **templates**. **Task artifacts** (prompts, TODO, graphs, logs, worker output, `FINAL_RESPONSE.md`) live under **`outputs/`** at the repository root: `outputs/<your-project-name>/<task-tldr>/`. See [Filesystem structure](RESEARCH_PROTOCOL.md#filesystem-structure).
+This directory holds the **research protocol**, **docs**, and **templates**. **Skills** live in **`.agents/skills/`** at the repo root. **Task artifacts** (prompts, TODO, graphs, logs, worker output, `FINAL_RESPONSE.md`) live under **`outputs/`** at the repository root: `outputs/<your-project-name>/<task-tldr>/`. See [Filesystem structure](RESEARCH_PROTOCOL.md#filesystem-structure).
 
 ## Start here
 

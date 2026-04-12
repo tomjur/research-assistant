@@ -15,7 +15,7 @@
 
 Defaults + role matrix: [SKILLS_AND_SCRIPTS.md](../docs/SKILLS_AND_SCRIPTS.md#fundamental-skills-default-workflow), [ROLE_BINDING.md](../docs/ROLE_BINDING.md).
 
-**Additional skills for this task** (optional — paths under `research projects/skills/`):
+**Additional skills for this task** (optional — paths under `.agents/skills/`):
 
 - 
 

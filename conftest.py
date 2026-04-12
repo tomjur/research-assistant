@@ -1,4 +1,4 @@
-"""Pytest: put every `research projects/skills/*/scripts` on sys.path (repo root)."""
+"""Pytest: put every `.agents/skills/*/scripts` on sys.path (repo root)."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pathlib import Path
 
 def pytest_configure(config) -> None:
     root = Path(__file__).resolve().parent
-    skills = root / "research projects" / "skills"
+    skills = root / ".agents" / "skills"
     if not skills.is_dir():
         return
     for scripts in sorted(skills.glob("*/scripts")):

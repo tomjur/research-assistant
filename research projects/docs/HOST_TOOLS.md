@@ -19,13 +19,13 @@ From repository root (venv optional):
 python3.11 -m venv .venv && .venv/bin/pip install pytest && .venv/bin/python -m pytest
 ```
 
-[`pyproject.toml`](../../pyproject.toml) + root [`conftest.py`](../../conftest.py): tests under `research projects/skills`, every `skills/*/scripts` on `sys.path`. **Ad hoc** (same path list):
+[`pyproject.toml`](../../pyproject.toml) + root [`conftest.py`](../../conftest.py): tests under `.agents/skills`, every `skills/*/scripts` on `sys.path`. **Ad hoc** (same path list):
 
 ```bash
-export PYTHONPATH="$(python3 -c "from pathlib import Path; import os; r=Path('research projects/skills'); print(os.pathsep.join(str(p) for p in sorted(r.glob('*/scripts')) if p.is_dir())))"
+export PYTHONPATH="$(python3 -c "from pathlib import Path; import os; r=Path('.agents/skills'); print(os.pathsep.join(str(p) for p in sorted(r.glob('*/scripts')) if p.is_dir())))"
 ```
 
-Windows: join the same `…/skills/*/scripts` paths with `;`, or run the `python -c` line under `cmd` / PowerShell and set `PYTHONPATH` to its output.
+Windows: join the same `.agents/skills/*/scripts` paths with `;`, or run the `python -c` line under `cmd` / PowerShell and set `PYTHONPATH` to its output.
 
 Helpers, layout, TDD: [SKILLS_AND_SCRIPTS.md](SKILLS_AND_SCRIPTS.md).
 

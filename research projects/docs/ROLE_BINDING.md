@@ -20,9 +20,7 @@ Which `SKILL.md` to open for each role: [Fundamental skills (default workflow)](
 
 ## Anti-loop rules
 
-1. **Workers** must **not** create new `{sub-task}/` directories, spawn subagents for other workers, or follow `research-orchestrator/SKILL.md` unless the **user** clearly promotes this session to orchestrator work.
-2. **Validators** must **not** perform open-ended new research or delegate orchestration.
-3. If generic repo context conflicts with the **delegation preamble** below, the **preamble wins**.
+The `FORBIDDEN:` blocks in the [delegation preambles](#delegation-preambles-copy-from-orchestrator-or-human) below are the enforced constraints for each role. In summary: workers must not delegate or orchestrate; validators must not perform new research or delegate. If generic repo context conflicts with the preamble a session received, **the preamble wins**.
 
 ## Delegation preambles (copy from orchestrator or human)
 

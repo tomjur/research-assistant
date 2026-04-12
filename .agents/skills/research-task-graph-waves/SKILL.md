@@ -9,11 +9,11 @@ description: >-
 
 # Research — Task graph and execution waves
 
-**Normative context:** [RESEARCH_PROTOCOL.md](../../RESEARCH_PROTOCOL.md#planning-and-handoff) Stage I steps 5–6. Keep graphs **simple** unless parallel branches or alternatives are real: a **linear chain** is a valid graph.
+**Normative context:** [RESEARCH_PROTOCOL.md](../../research%20projects/RESEARCH_PROTOCOL.md#planning-and-handoff) Stage I steps 5–6. Keep graphs **simple** unless parallel branches or alternatives are real: a **linear chain** is a valid graph.
 
 ## When to use
 
-- **Initial plan:** After decomposing the user goal into orchestrator-sized subtasks, before creating `{sub-task}` folders. For academic or survey-heavy missions, decomposition should **already** reflect **survey-derived** structure (vocabulary, subareas, dependencies) per [RESEARCH_PROTOCOL.md — Survey and review literature](../../RESEARCH_PROTOCOL.md#survey-and-review-literature-when-applicable) before you author the first **`TASK_GRAPH.json`**.
+- **Initial plan:** After decomposing the user goal into orchestrator-sized subtasks, before creating `{sub-task}` folders. For academic or survey-heavy missions, decomposition should **already** reflect **survey-derived** structure (vocabulary, subareas, dependencies) per [RESEARCH_PROTOCOL.md — Survey and review literature](../../research%20projects/RESEARCH_PROTOCOL.md#survey-and-review-literature-when-applicable) before you author the first **`TASK_GRAPH.json`**.
 - **Replan:** When new information implies **new tasks** or **new dependencies**, update `TASK_GRAPH.json` and run the helper again with an updated **`completed`** set so finished work is never rescheduled.
 
 ## Graph conventions
@@ -37,18 +37,17 @@ Write **`TASK_GRAPH.json`** in the task folder (`outputs/{research-project-x}/{t
 
 ## Python
 
-**API:** [Helper APIs — `task_graph_waves`](../../docs/SKILLS_AND_SCRIPTS.md#helper-apis). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../docs/HOST_TOOLS.md#python).
+**API:** [Helper APIs — `task_graph_waves`](../../research%20projects/docs/SKILLS_AND_SCRIPTS.md#helper-apis). **`PYTHONPATH`:** [HOST_TOOLS — Python](../../research%20projects/docs/HOST_TOOLS.md#python).
 
-**CLI (JSON in, JSON out):** from repository root, set **`PYTHONPATH`** to every `research projects/skills/*/scripts` (same as pytest — [HOST_TOOLS](../../docs/HOST_TOOLS.md#python)), then **`python -m task_graph_waves --file`** with this task’s **`TASK_GRAPH.json`**.
+**CLI (JSON in, JSON out):** after setting **`PYTHONPATH`** per [HOST_TOOLS — Python](../../research%20projects/docs/HOST_TOOLS.md#python), run from the repository root:
 
 ```bash
-export PYTHONPATH="$(python3 -c "from pathlib import Path; import os; r=Path('research projects/skills'); print(os.pathsep.join(str(p) for p in sorted(r.glob('*/scripts')) if p.is_dir()))")"
 python3 -m task_graph_waves --file outputs/<project>/<task-tldr>/TASK_GRAPH.json
 ```
 
 ## Agent workflow
 
-1. Author or edit **`TASK_GRAPH.json`** (minimal DAG; parallel branches only when justified). First graph: align with [Survey and review literature](../../RESEARCH_PROTOCOL.md#survey-and-review-literature-when-applicable) when applicable (see **When to use** above).
+1. Author or edit **`TASK_GRAPH.json`** (minimal DAG; parallel branches only when justified). First graph: align with [Survey and review literature](../../research%20projects/RESEARCH_PROTOCOL.md#survey-and-review-literature-when-applicable) when applicable (see **When to use** above).
 2. Build **`completed`** from task state (ids only).
 3. Run Python; read **`waves`**. **Execute the first wave** (or all tasks in the current wave in parallel when the host allows); after they finish, update **`completed`**, re-run the script for the **next** wave. Alternatively, use the full **`waves`** list as a static schedule if the graph will not change.
 4. On **replan**, merge new nodes/edges into the JSON, keep **`completed`** accurate, invoke this skill again. **Do not** re-run tasks whose ids are already in **`completed`**.

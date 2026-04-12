@@ -1,6 +1,6 @@
 # Discovered skills flow
 
-Task-local drafts under **`outputs/.../{task-tldr}/discovered-skills/`**; shared skills only after Stage III approval → [research-skill-proposal/SKILL.md](../skills/research-skill-proposal/SKILL.md). Full normative context: [RESEARCH_PROTOCOL.md](../RESEARCH_PROTOCOL.md).
+Task-local drafts under **`outputs/.../{task-tldr}/discovered-skills/`**; shared skills only after Stage III approval → [research-skill-proposal/SKILL.md](../../.agents/skills/research-skill-proposal/SKILL.md). Full normative context: [RESEARCH_PROTOCOL.md](../RESEARCH_PROTOCOL.md).
 
 ## Paths and files
 
@@ -19,7 +19,7 @@ Task-local drafts under **`outputs/.../{task-tldr}/discovered-skills/`**; shared
 2. If **yes**, write **one** new file under `discovered-skills/` (naming above).
 3. **Second pass:** Re-read it. If not confident it is reusable, **delete** the file (no stub).
 
-**Rules:** No user approval requests in Stage II for routine discovery. Do **not** write under `research projects/skills/` until post–Stage III approval.
+**Rules:** No user approval requests in Stage II for routine discovery. Do **not** write under `.agents/skills/` until post–Stage III approval.
 
 <a id="stage-iii-consolidation"></a>
 

@@ -2,7 +2,7 @@
 
 During the run, maintain:
 
-- **Parent task dir** (`outputs/{research-project-x}/{task-tldr}/`) — task-level execution log: [RESEARCH_PROTOCOL — `{task-tldr}`](../RESEARCH_PROTOCOL.md#filesystem-structure); [Helper APIs — `execution_log`](../docs/SKILLS_AND_SCRIPTS.md#helper-apis).
+- **Parent task dir** (`outputs/{research-project-x}/{task-tldr}/`) — task-level execution log: [RESEARCH_PROTOCOL — `{task-tldr}`](../RESEARCH_PROTOCOL.md#filesystem-structure); [Helper APIs — `execution_log`](../docs/SKILLS_AND_SCRIPTS.md#helper-apis). Append **`subtask`**, **`host_subagent`**, **`worker`**, and **`validator`** events with **START**/**END** pairs per that protocol section (not end-only).
 - `orchestrator_log.md` — narrative log, prompts, worker counts
 - `orchestrator_responses.md` — prompt / validated response pairs
 - `orchestrator_meta.json` — optional JSON counters

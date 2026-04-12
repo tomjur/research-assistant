@@ -4,7 +4,6 @@ import hashlib
 
 __all__ = [
     "collect_unique_prompts",
-    "normalize_for_dedup",
     "prompt_fingerprint",
     "try_add_unique",
     "variant_collection_should_stop",
@@ -80,13 +79,9 @@ def variant_collection_should_stop(
     target_uniques: int,
     max_generation_attempts: int,
 ) -> tuple[bool, str | None]:
-    """
-    Whether to stop proposing new prompt variants.
+    """Whether to stop proposing new prompt variants.
 
-    Maps to RESEARCH_PROTOCOL hyperparameters: ``target_uniques`` is
-    ``$InitialPromptVariants$``; ``max_generation_attempts`` is
-    ``$MaxCountToFindUniquePrompts$``. Increment ``generation_attempts`` once
-    per proposed variant (accepted or duplicate).
+    Returns (should_stop, reason) where reason is "target_met" or "attempt_budget".
     """
     if target_uniques < 0 or max_generation_attempts < 0:
         raise ValueError("target_uniques and max_generation_attempts must be non-negative")

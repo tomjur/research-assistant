@@ -2,6 +2,10 @@ todo.txt
 
 outputs/
 
+# Claude Code symlinks (recreated by scripts/setup-claude.sh)
+CLAUDE.md
+.claude/
+
 .venv/
 __pycache__/
 *.py[cod]

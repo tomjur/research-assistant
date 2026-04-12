@@ -5,14 +5,25 @@ from __future__ import annotations
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal
+from typing import Literal, TypeAlias
 
 __all__ = [
     "append_execution_record",
     "CANONICAL_LOG_PATTERN",
+    "ExecutionLogRole",
     "format_log_filename",
     "render_execution_record",
     "resolve_task_execution_log",
+    "utc_timestamp_iso",
+]
+
+# Roles for the third token in `--- {iso} {phase} {role} ---`.
+ExecutionLogRole: TypeAlias = Literal[
+    "worker",
+    "validator",
+    "planning",
+    "subtask",
+    "host_subagent",
 ]
 
 # Filenames from format_log_filename(): log_YYYY-MM-DD_HHMMSS.txt (UTC).
@@ -50,14 +61,28 @@ def resolve_task_execution_log(task_tldr_dir: Path | str, *, now: datetime | Non
     return log_path
 
 
+def utc_timestamp_iso(*, now: datetime | None = None) -> str:
+    """Return an ISO-8601 UTC timestamp ending in ``Z`` (no sub-second fraction)."""
+    if now is None:
+        now = datetime.now(timezone.utc)
+    elif now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    return now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def render_execution_record(
     timestamp_iso: str,
     phase: Literal["START", "END"],
-    role: Literal["worker", "validator"],
+    role: ExecutionLogRole,
     fields: list[tuple[str, str]],
 ) -> str:
     """
     Format one event block for ``log_*.txt``.
+
+    **Roles:** ``worker`` / ``validator`` (delegated research children); ``planning``
+    (Stage I / director in ``{task-tldr}/``); ``subtask`` (orchestrator entering or
+    leaving one ``{sub-task}/``); ``host_subagent`` (host Task or equivalent — include
+    ``subagent_type`` in ``fields``).
 
     Multiline values use a YAML-style ``key: |`` block with two-space-indented lines.
     """

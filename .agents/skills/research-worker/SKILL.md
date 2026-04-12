@@ -7,10 +7,6 @@ description: >-
 
 # Research — Worker
 
-## Role binding
-
-If you received a **delegation preamble** (`DELEGATION_PREAMBLE_WORKER`), it **overrides** generic repo context. You are **not** an orchestrator: do **not** spawn workers or validators, do **not** create new `{sub-task}/` folders, and do **not** follow [research-orchestrator/SKILL.md](../research-orchestrator/SKILL.md) unless the user explicitly reassigned you. See [docs/ROLE_BINDING.md](../../docs/ROLE_BINDING.md).
-
 ## When to use
 
 - Invoked by an orchestrator for one **(prompt variant, model, copy)** run.
@@ -27,15 +23,15 @@ If you received a **delegation preamble** (`DELEGATION_PREAMBLE_WORKER`), it **o
 
 ## Output shape
 
-Use the canonical layout in [templates/worker.example.md](../../templates/worker.example.md) (front matter + **Prompt** + **Response** sections).
+Use the canonical layout in [templates/worker.example.md](../../research%20projects/templates/worker.example.md) (front matter + **Prompt** + **Response** sections).
 
 ## Rules
 
 - **Length:** **`USER_PROMPT.md`** **Deliverable constraints** (or orchestrator message).
 - **Sources:** Prefer primary / official / peer-reviewed when appropriate; every non-obvious claim → **Sources** or **Gaps / uncertainty**.
-- **Related-work sections:** Extract **sourced** leads (Related work, Background, Bibliography, etc.); out-of-scope but mission-relevant → **Gaps / uncertainty** for orchestrator [propagation / replan](../../RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask) ([ROLE_BINDING](../../docs/ROLE_BINDING.md)).
+- **Related-work sections:** Extract **sourced** leads (Related work, Background, Bibliography, etc.); put out-of-scope but mission-relevant leads in **Gaps / uncertainty** so the orchestrator can escalate or propagate them.
 - **Links:** Do **not** claim HTTP verification unless you fetched; validator checks.
-- **Discovered skills:** After primary artifact, [Stage II reflection](../../docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection).
+- **Discovered skills:** After primary artifact, [Stage II reflection](../../research%20projects/docs/DISCOVERED_SKILLS_FLOW.md#stage-ii-reflection).
 
 ## After writing
 
