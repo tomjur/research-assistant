@@ -1,0 +1,31 @@
+<article class="artifact-viewer">
+  <header>
+    <h4>{{ filename }}</h4>
+    <button class="close-btn" onclick="this.closest('.artifact-viewer').remove()">&times;</button>
+  </header>
+
+  {% if frontmatter %}
+  <div class="frontmatter-display">
+    <table class="compact-table">
+      {% for key, value in frontmatter.items() %}
+      <tr>
+        <td><strong>{{ key }}</strong></td>
+        <td>
+          {% if key == 'validation_status' %}
+            <span class="validation-status {{ value }}">{{ value }}</span>
+          {% else %}
+            {{ value }}
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  {% endif %}
+
+  {% if error %}
+    <article class="error-box"><pre>{{ error }}</pre></article>
+  {% elif content %}
+    <div class="markdown-body">{{ content | safe }}</div>
+  {% endif %}
+</article>

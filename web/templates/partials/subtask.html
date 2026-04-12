@@ -1,0 +1,136 @@
+<div class="subtask-detail">
+
+  {# Orchestrator Responses Table (parsed) #}
+  {% if orch_resp_table %}
+    <h4>Worker / Validator Pairs</h4>
+    <table class="compact-table">
+      <thead><tr><th>Copy</th><th>Worker</th><th>Validator</th></tr></thead>
+      <tbody>
+        {% for row in orch_resp_table %}
+        <tr>
+          <td>{{ row.copy }}</td>
+          <td>
+            <a href="#" class="artifact-link"
+               hx-get="/api/task/{{ project }}/{{ task }}/artifact?path={{ subtask_id }}/{{ row.worker_path }}"
+               hx-target="#artifact-modal"
+               hx-swap="innerHTML">
+              {{ row.worker_path | replace('workers/', '') }}
+            </a>
+          </td>
+          <td>
+            <a href="#" class="artifact-link"
+               hx-get="/api/task/{{ project }}/{{ task }}/artifact?path={{ subtask_id }}/{{ row.validator_path }}"
+               hx-target="#artifact-modal"
+               hx-swap="innerHTML">
+              {{ row.validator_path | replace('validators/', '') }}
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% elif orch_resp_err %}
+    <details>
+      <summary>orchestrator_responses.md (parse failed, showing raw)</summary>
+      {% if orch_resp_html %}
+        {{ orch_resp_html | safe }}
+      {% else %}
+        <article class="error-box"><pre>{{ orch_resp_err }}</pre></article>
+      {% endif %}
+    </details>
+  {% endif %}
+
+  {# Workers #}
+  {% if artifacts %}
+    {% if artifacts.workers %}
+    <h4>Workers ({{ artifacts.workers | length }})</h4>
+    <div class="artifact-cards">
+      {% for w in artifacts.workers %}
+      <div class="artifact-card worker">
+        <div class="card-header">
+          <strong>{{ w.name }}</strong>
+          <a href="#" class="artifact-link"
+             hx-get="/api/task/{{ project }}/{{ task }}/artifact?path={{ subtask_id }}/workers/{{ w.name }}"
+             hx-target="#artifact-modal"
+             hx-swap="innerHTML">view</a>
+        </div>
+        <div class="card-meta">
+          {% if w.frontmatter %}
+            <span class="meta-tag">model: {{ w.frontmatter.get('model', '?') }}</span>
+            <span class="meta-tag">copy: {{ w.frontmatter.get('copy', '?') }}</span>
+            <span class="meta-tag">hash: {{ w.frontmatter.get('prompt_hash', '?') }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# Validators #}
+    {% if artifacts.validators %}
+    <h4>Validators ({{ artifacts.validators | length }})</h4>
+    <div class="artifact-cards">
+      {% for v in artifacts.validators %}
+      <div class="artifact-card validator">
+        <div class="card-header">
+          <strong>{{ v.name }}</strong>
+          {% if v.frontmatter.get('validation_status') %}
+            <span class="validation-status {{ v.frontmatter.validation_status }}">
+              {{ v.frontmatter.validation_status }}
+            </span>
+          {% endif %}
+          <a href="#" class="artifact-link"
+             hx-get="/api/task/{{ project }}/{{ task }}/artifact?path={{ subtask_id }}/validators/{{ v.name }}"
+             hx-target="#artifact-modal"
+             hx-swap="innerHTML">view</a>
+        </div>
+        <div class="card-meta">
+          {% if v.frontmatter %}
+            <span class="meta-tag">worker: {{ v.frontmatter.get('worker_model', '?') }}</span>
+            <span class="meta-tag">control: {{ v.frontmatter.get('control_model', '?') }}</span>
+            <span class="meta-tag">copy: {{ v.frontmatter.get('copy', '?') }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  {% elif art_err %}
+    <article class="error-box"><pre>{{ art_err }}</pre></article>
+  {% endif %}
+
+  {# Related-work leads #}
+  {% if orch_leads %}
+    <h4>Related-work Leads</h4>
+    <table class="compact-table">
+      <thead>
+        <tr>
+          {% for key in orch_leads[0].keys() %}
+          <th>{{ key | replace('_', ' ') | title }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in orch_leads %}
+        <tr>
+          {% for val in row.values() %}
+          <td>{{ val }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  {# Orchestrator Log #}
+  {% if orch_log_html %}
+    <details>
+      <summary>Orchestrator Log (full)</summary>
+      <div class="markdown-body">{{ orch_log_html | safe }}</div>
+    </details>
+  {% endif %}
+
+  {# Artifact modal #}
+  <div id="artifact-modal"></div>
+
+</div>

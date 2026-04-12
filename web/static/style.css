@@ -1,0 +1,525 @@
+/* Dashboard layout */
+body { margin: 0; padding: 0; }
+
+.dashboard {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 320px;
+  min-width: 320px;
+  background: var(--pico-card-background-color);
+  border-right: 1px solid var(--pico-muted-border-color);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 1rem 1rem 0.5rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  position: sticky;
+  top: 0;
+  background: var(--pico-card-background-color);
+  z-index: 1;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sidebar-project {
+  padding: 0.5rem 0;
+}
+
+.project-name {
+  padding: 0.25rem 1rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.task-item:hover {
+  background: var(--pico-secondary-focus);
+}
+
+.task-item.active {
+  border-left-color: var(--pico-primary);
+  background: var(--pico-primary-focus);
+}
+
+.task-name {
+  flex: 1;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--pico-muted-color);
+}
+
+/* Status dots */
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-dot.completed { background: #22c55e; }
+.status-dot.in_progress { background: #eab308; animation: pulse 2s infinite; }
+.status-dot.planning { background: #94a3b8; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Main panel */
+.main-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 2rem;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--pico-muted-color);
+}
+
+/* Task header */
+.task-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.task-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.status-badge.completed { background: #dcfce7; color: #166534; }
+.status-badge.in_progress { background: #fef9c3; color: #854d0e; }
+.status-badge.planning { background: #f1f5f9; color: #475569; }
+
+/* Tab navigation */
+.tab-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--pico-muted-border-color);
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--pico-muted-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.tab-btn:hover {
+  color: var(--pico-color);
+}
+
+.tab-btn.active {
+  color: var(--pico-primary);
+  border-bottom-color: var(--pico-primary);
+}
+
+/* Overview grid */
+.overview-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.overview-section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--pico-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.wave-header {
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0.25rem;
+  color: var(--pico-muted-color);
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+  font-size: 0.9rem;
+}
+
+.todo-item input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Compact tables */
+.compact-table {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.compact-table th, .compact-table td {
+  padding: 0.3rem 0.6rem;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.timeline-event {
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--pico-muted-border-color);
+  border-radius: 0 4px 4px 0;
+  background: var(--pico-card-background-color);
+  font-size: 0.85rem;
+}
+
+.timeline-event.running {
+  border-left-color: #eab308;
+  background: #fefce8;
+}
+
+.timeline-event.role-planning { border-left-color: #3b82f6; }
+.timeline-event.role-subtask { border-left-color: #22c55e; }
+.timeline-event.role-worker { border-left-color: #f97316; }
+.timeline-event.role-validator { border-left-color: #a855f7; }
+.timeline-event.role-step { border-left-color: #94a3b8; }
+.timeline-event.role-host_subagent { border-left-color: #06b6d4; }
+
+.event-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.role-badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+}
+
+.role-badge.planning { background: #3b82f6; }
+.role-badge.subtask { background: #22c55e; }
+.role-badge.worker { background: #f97316; }
+.role-badge.validator { background: #a855f7; }
+.role-badge.step { background: #94a3b8; }
+.role-badge.host_subagent { background: #06b6d4; }
+
+.event-time {
+  font-family: var(--pico-font-family-monospace, monospace);
+  font-size: 0.8rem;
+  color: var(--pico-muted-color);
+}
+
+.duration {
+  font-size: 0.8rem;
+  color: var(--pico-muted-color);
+}
+
+.running-indicator {
+  color: #eab308;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+.status-pill {
+  font-size: 0.7rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 8px;
+}
+
+.status-pill.success { background: #dcfce7; color: #166534; }
+.status-pill.failed { background: #fecaca; color: #991b1b; }
+.status-pill.cancelled { background: #f1f5f9; color: #475569; }
+
+.warning-badge {
+  font-size: 0.7rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 8px;
+  background: #fef3c7;
+  color: #92400e;
+  cursor: help;
+}
+
+.event-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.field {
+  font-size: 0.8rem;
+}
+
+.field-key {
+  color: var(--pico-muted-color);
+}
+
+.field-value {
+  font-family: var(--pico-font-family-monospace, monospace);
+}
+
+/* Task graph */
+.graph-nodes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.graph-node {
+  padding: 0.75rem;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 8px;
+  background: var(--pico-card-background-color);
+}
+
+.graph-node.completed {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.node-desc {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin: 0;
+}
+
+.node-status {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.node-status.done { color: #22c55e; }
+.node-status.pending { color: #eab308; }
+
+.graph-edges {
+  font-size: 0.85rem;
+}
+
+.graph-edges ul {
+  padding-left: 1.5rem;
+}
+
+/* Subtask accordion */
+.subtask-accordion {
+  margin-bottom: 0.5rem;
+}
+
+.subtask-accordion summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.subtask-accordion summary:hover {
+  background: var(--pico-secondary-focus);
+}
+
+/* Artifact cards */
+.artifact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.artifact-card {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.artifact-card.worker { border-left: 3px solid #f97316; }
+.artifact-card.validator { border-left: 3px solid #a855f7; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.card-meta {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  font-size: 0.75rem;
+  padding: 0.05rem 0.3rem;
+  background: var(--pico-secondary-focus);
+  border-radius: 3px;
+  font-family: var(--pico-font-family-monospace, monospace);
+}
+
+.validation-status {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.validation-status.passed { background: #dcfce7; color: #166534; }
+.validation-status.failed { background: #fecaca; color: #991b1b; }
+
+.artifact-link {
+  font-size: 0.8rem;
+}
+
+/* Artifact viewer (modal-like) */
+.artifact-viewer {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: var(--pico-card-background-color);
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.artifact-viewer header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+.artifact-viewer header h4 { margin: 0; }
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  color: var(--pico-muted-color);
+}
+
+.frontmatter-display {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: var(--pico-secondary-focus);
+  border-radius: 4px;
+}
+
+/* Markdown body */
+.markdown-body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.markdown-body table {
+  font-size: 0.85rem;
+}
+
+/* Error boxes */
+.error-box {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.error-box h4 {
+  color: #991b1b;
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+}
+
+.error-box pre {
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  margin: 0;
+  color: #991b1b;
+}
+
+/* Utilities */
+.loading {
+  color: var(--pico-muted-color);
+  font-style: italic;
+}
+
+.no-data {
+  color: var(--pico-muted-color);
+  font-style: italic;
+  font-size: 0.9rem;
+}

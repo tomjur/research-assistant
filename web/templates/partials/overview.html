@@ -1,0 +1,83 @@
+<div class="overview-grid">
+
+  {# User Prompt #}
+  <section class="overview-section">
+    <h3>Research Request</h3>
+    {% if prompt_err %}
+      <article class="error-box"><pre>{{ prompt_err }}</pre></article>
+    {% elif prompt %}
+      {% if prompt.original_request %}
+        <blockquote>{{ prompt.original_request }}</blockquote>
+      {% endif %}
+      {% if prompt.deliverable_constraints %}
+        <details>
+          <summary>Deliverable constraints</summary>
+          <p>{{ prompt.deliverable_constraints }}</p>
+        </details>
+      {% endif %}
+      {% if prompt.search_terms_html %}
+        <details>
+          <summary>Approved search terms</summary>
+          {{ prompt.search_terms_html | safe }}
+        </details>
+      {% endif %}
+    {% else %}
+      <p class="no-data">USER_PROMPT.md not found</p>
+    {% endif %}
+  </section>
+
+  {# Hyperparameters #}
+  <section class="overview-section">
+    <h3>Hyperparameters</h3>
+    {% if hp_err %}
+      <article class="error-box"><pre>{{ hp_err }}</pre></article>
+    {% elif hyperparams %}
+      <table class="compact-table">
+        <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+        <tbody>
+          {% for name, value in hyperparams %}
+          <tr><td><code>{{ name }}</code></td><td>{{ value }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="no-data">HYPERPARAMETERS.md not found</p>
+    {% endif %}
+  </section>
+
+  {# TODO checklist #}
+  <section class="overview-section">
+    <h3>Tasks</h3>
+    {% if todo_err %}
+      <article class="error-box"><pre>{{ todo_err }}</pre></article>
+    {% elif todo %}
+      {% set ns = namespace(current_wave='') %}
+      {% for item in todo %}
+        {% if item.wave != ns.current_wave %}
+          {% set ns.current_wave = item.wave %}
+          <h4 class="wave-header">{{ item.wave }}</h4>
+        {% endif %}
+        <label class="todo-item">
+          <input type="checkbox" disabled {{ 'checked' if item.done }}>
+          <code>{{ item.id }}</code> {{ item.text | replace(item.id, '') | replace('`', '') | replace(' — ', ' ') }}
+        </label>
+      {% endfor %}
+    {% else %}
+      <p class="no-data">TODO.md not found</p>
+    {% endif %}
+  </section>
+
+  {# Final Response link #}
+  {% if final_exists %}
+  <section class="overview-section">
+    <h3>Final Response</h3>
+    <button class="outline"
+            hx-get="/api/task/{{ project }}/{{ task }}/artifact?path=FINAL_RESPONSE.md"
+            hx-target="#tab-content"
+            hx-swap="innerHTML">
+      View FINAL_RESPONSE.md
+    </button>
+  </section>
+  {% endif %}
+
+</div>

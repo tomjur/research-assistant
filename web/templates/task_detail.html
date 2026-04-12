@@ -1,0 +1,32 @@
+<div class="task-header">
+  <h2>{{ task }}</h2>
+  <span class="status-badge {{ status }}">{{ status }}</span>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active"
+          hx-get="/api/task/{{ project }}/{{ task }}/overview"
+          hx-target="#tab-content"
+          hx-swap="innerHTML"
+          onclick="setActiveTab(this)">Overview</button>
+  <button class="tab-btn"
+          hx-get="/api/task/{{ project }}/{{ task }}/timeline"
+          hx-target="#tab-content"
+          hx-swap="innerHTML"
+          onclick="setActiveTab(this)">Timeline</button>
+  <button class="tab-btn"
+          hx-get="/api/task/{{ project }}/{{ task }}/graph"
+          hx-target="#tab-content"
+          hx-swap="innerHTML"
+          onclick="setActiveTab(this)">Task Graph</button>
+</div>
+
+<div id="tab-content"
+     hx-get="/api/task/{{ project }}/{{ task }}/overview"
+     hx-trigger="load"
+     hx-swap="innerHTML"
+     {% if status != 'completed' %}
+     hx-trigger="load, every 15s"
+     {% endif %}>
+  <p class="loading">Loading...</p>
+</div>

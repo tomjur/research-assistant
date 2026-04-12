@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <nav class="sidebar" id="sidebar">
+      <header class="sidebar-header">
+        <h3>Research Dashboard</h3>
+      </header>
+      <div id="sidebar-content"
+           hx-get="/api/projects"
+           hx-trigger="load"
+           hx-swap="innerHTML">
+        <p class="loading">Loading projects...</p>
+      </div>
+    </nav>
+    <main class="main-panel" id="main-panel">
+      {% if error %}
+        <article class="error-box">
+          <h4>Error loading projects</h4>
+          <pre>{{ error }}</pre>
+        </article>
+      {% else %}
+        <div class="empty-state">
+          <h2>Select a research task</h2>
+          <p>Choose a task from the sidebar to view its details.</p>
+        </div>
+      {% endif %}
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% if error %}
+  <article class="error-box"><h4>Task graph error</h4><pre>{{ error }}</pre></article>
+{% elif graph %}
+  <div class="task-graph">
+    <div class="graph-nodes">
+      {% for node in graph.nodes %}
+      <div class="graph-node {{ 'completed' if node.id in graph.completed else 'pending' }}">
+        <div class="node-header">
+          <span class="status-dot {{ 'completed' if node.id in graph.completed else 'in_progress' }}"></span>
+          <strong>{{ node.id }}</strong>
+        </div>
+        <p class="node-desc">{{ node.description }}</p>
+        <span class="node-status {{ 'done' if node.id in graph.completed else 'pending' }}">
+          {{ 'done' if node.id in graph.completed else 'pending' }}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="graph-edges">
+      <h4>Dependencies</h4>
+      <ul>
+        {% for edge in graph.edges %}
+        <li>{{ edge[0] }} &rarr; {{ edge[1] }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h3>Subtask Details</h3>
+    <div class="subtask-list">
+      {% for node in graph.nodes %}
+      <details class="subtask-accordion">
+        <summary>
+          <span class="status-dot {{ 'completed' if node.id in graph.completed else 'in_progress' }}"></span>
+          <strong>{{ node.id }}</strong> &mdash; {{ node.description[:80] }}{% if node.description|length > 80 %}...{% endif %}
+        </summary>
+        <div hx-get="/api/task/{{ project }}/{{ task }}/subtask/{{ node.id }}"
+             hx-trigger="revealed"
+             hx-swap="innerHTML">
+          <p class="loading">Loading subtask details...</p>
+        </div>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+  <p class="no-data">No TASK_GRAPH.json found (task may still be in planning)</p>
+{% endif %}

@@ -1,0 +1,39 @@
+{% if parse_err %}
+  <article class="error-box"><h4>Log parse error</h4><pre>{{ parse_err }}</pre></article>
+{% elif events %}
+  <div class="timeline">
+    {% for ev in events %}
+    <div class="timeline-event role-{{ ev.role }} {{ 'running' if not ev.end_time and ev.role != 'step' }}">
+      <div class="event-header">
+        <span class="role-badge {{ ev.role }}">{{ ev.role }}</span>
+        <span class="event-time">{{ ev.start_time }}</span>
+        {% if ev.duration_s is not none %}
+          <span class="duration">{{ "%.1f" | format(ev.duration_s) }}s</span>
+        {% elif not ev.end_time and ev.role != 'step' %}
+          <span class="duration running-indicator">in progress</span>
+        {% endif %}
+        {% if ev.status %}
+          <span class="status-pill {{ ev.status }}">{{ ev.status }}</span>
+        {% endif %}
+        {% if ev.warnings %}
+          <span class="warning-badge" title="{{ ev.warnings | join(', ') }}">{{ ev.warnings | length }} warning(s)</span>
+        {% endif %}
+      </div>
+      <div class="event-fields">
+        {% for key, value in ev.fields.items() %}
+          {% if key not in ('duration_s', 'status') %}
+          <span class="field">
+            <span class="field-key">{{ key }}:</span>
+            <span class="field-value">{{ value }}</span>
+          </span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% elif blocks is not none %}
+  <p class="no-data">Log file is empty (no events parsed)</p>
+{% else %}
+  <p class="no-data">No log file found</p>
+{% endif %}
