@@ -38,8 +38,16 @@ Host isolation: [HOST_TOOLS](../../research%20projects/docs/HOST_TOOLS.md).
 
 ## Logging
 
-- **Task-level `log_*.txt`:** append **START**/**END** pairs for `subtask`, `worker`, `validator`, and `host_subagent` events using **`execution_log`** helpers ([Helper APIs](../../research%20projects/docs/SKILLS_AND_SCRIPTS.md#helper-apis), [setup](../../research%20projects/docs/HOST_TOOLS.md#python)). Field contract: [RESEARCH_PROTOCOL — Execution log](../../research%20projects/RESEARCH_PROTOCOL.md#filesystem-structure).
-- **Sub-task:** `orchestrator_log.md` (narrative, variants, worker/validator counts), `orchestrator_responses.md` (prompt → validated pairs), optional `orchestrator_meta.json`.
+- **Task-level `log_*.txt`:** Use **`log_event`** for START blocks and **`log_end_event`** for END blocks (both generate timestamps at write-time and `log_end_event` auto-computes `duration_s`). Append `subtask`, `worker`, `validator`, and `host_subagent` events. Field contract: [RESEARCH_PROTOCOL — Execution log](../../research%20projects/RESEARCH_PROTOCOL.md#filesystem-structure). Setup: [Helper APIs](../../research%20projects/docs/SKILLS_AND_SCRIPTS.md#helper-apis), [HOST_TOOLS](../../research%20projects/docs/HOST_TOOLS.md#python).
+- **`delegation_type`** (**required** on worker/validator START): record how the child was launched — `host_subagent` | `background_agent` | `inline_single_session` | other host-specific string.
+- **Validator END extras:** include `claims_challenged` and `links_checked` when available.
+- **Step events:** Use **`log_step`** (or manual `step` blocks) for discrete actions **within** this subtask:
+  - `skill_invocation` — when opening `research-worker` or `research-validator` SKILL.md for a delegation.
+  - `script_call` — when calling `prompt_variants` or `execution_log` helpers.
+  - `prompt_variant_collection` — after dedup, with `candidates_generated`, `unique_accepted`, `duplicates_rejected`, `stop_reason`.
+  - `user_decision` — when escalating to the user (replan, empty results, scope question) and recording their answer. When asking about a replan triggered by related-work leads, reference the specific leads by `lead_summary`.
+  - `related_work_lead` — when the orchestrator identifies a substantive lead from validated output. Fields: `lead_summary`, `source_artifacts`, `implies_new_subgoal`, `escalated_to_user`, optional `dedup_note`. See [RESEARCH_PROTOCOL — Execution log](../../research%20projects/RESEARCH_PROTOCOL.md#filesystem-structure).
+- **Sub-task:** `orchestrator_log.md` (narrative, variants, worker/validator counts, **`## Related-work leads`** section), `orchestrator_responses.md` (prompt → validated pairs), optional `orchestrator_meta.json`.
 
 ## Decision rules and propagation
 
@@ -47,7 +55,12 @@ Host isolation: [HOST_TOOLS](../../research%20projects/docs/HOST_TOOLS.md).
 - **Repetition:** generate **new unique** prompts (subject to **`$MaxCountToFindUniquePrompts$`** and, if set, **`$MaxOrchestratorIterations$`**).
 - **Convergence:** if **no new information** appears across iterations, finish and mark the subtask complete in parent `TODO.md`.
 - **In-subtask crucial facts:** when a worker surfaces something that **changes how remaining work in this `{sub-task}`** should proceed, append it to **`SHARED_CONTEXT.md`** (dated bullet list) so **new** delegated workers read it.
-- **Related-work leads → replan:** when validated output implies **new subgoals outside** this subtask ([RESEARCH_PROTOCOL — Orchestrator algorithm](../../research%20projects/RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask) step 8), record the leads in **`orchestrator_log.md`**, mirror them to `SHARED_CONTEXT.md` only if they still inform this subtask’s remaining runs, and **ask the user** whether to run a **Stage I replan**. You **must not** edit **`TODO.md`** or **`TASK_GRAPH.json`** yourself ([docs/ROLE_BINDING.md](../../research%20projects/docs/ROLE_BINDING.md)).
+- **Related-work leads → replan:** after each validator completes, scan the validated output for leads from related-work or equivalent sections that imply **new subgoals outside** this subtask ([RESEARCH_PROTOCOL — Orchestrator algorithm](../../research%20projects/RESEARCH_PROTOCOL.md#orchestrator-algorithm-per-subtask) step 8). For each lead:
+  1. **Check `## Related-work leads`** in `orchestrator_log.md` — if a substantially similar lead is already recorded, note it as corroborating evidence on the existing entry (update `source_artifacts`) rather than creating a duplicate. Log a `related_work_lead` step event with `dedup_note`.
+  2. If the lead is **net-new**, add it to `## Related-work leads` with: short description, source artifact(s), whether it implies a new subgoal. Log a `related_work_lead` step event.
+  3. Mirror to `SHARED_CONTEXT.md` only if the lead still informs this subtask’s remaining runs.
+  4. **Batch escalation:** after a full wave of workers/validators completes (not after each individual worker), collect all net-new leads that imply new subgoals and **ask the user once** whether to run a Stage I replan. Log a `user_decision` step event referencing the specific leads. Do **not** re-escalate leads the user has already seen.
+  5. You **must not** edit **`TODO.md`** or **`TASK_GRAPH.json`** yourself ([docs/ROLE_BINDING.md](../../research%20projects/docs/ROLE_BINDING.md)).
 - If propagation or escalation would **guess** user intent, **ask the user first**.
 
 ## Discovered skills

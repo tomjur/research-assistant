@@ -20,3 +20,11 @@ During the run, maintain:
 | Wave | Prompt hash | Model | Copy | Worker status | Validator status |
 |------|-------------|-------|------|----------------|------------------|
 | | | | | | |
+
+## Related-work leads
+
+<!-- After each wave, record leads from validated output that imply new subgoals outside this subtask. Dedup against existing entries before adding. -->
+
+| Lead summary | Source artifacts | Implies new subgoal | Escalated to user | Notes |
+|---|---|---|---|---|
+| | | | | |
