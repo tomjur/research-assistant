@@ -36,7 +36,7 @@ Click a task in the sidebar to load its detail panel with multiple tabs:
 
 #### 1. Overview (default tab)
 - **Research Request** — original prompt, deliverable constraints, approved search terms
-- **Hyperparameters** — $InitialPromptVariants$, $WorkersPerTask$, $MaxOrchestratorIterations$, etc.
+- **Hyperparameters** — $InitialPromptVariants$, $WorkersPerTask$, $EarlyStoppingWorkers$, $MaxOrchestratorIterations$, etc.
 - **Tasks** — checklist from TODO.md, organized by execution wave
 - **Final Response** — link to view FINAL_RESPONSE.md if task is complete
 

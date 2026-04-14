@@ -21,6 +21,37 @@ During the run, maintain:
 |------|-------------|-------|------|----------------|------------------|
 | | | | | | |
 
+## Findings tracker
+
+<!--
+Per-vendor accumulated atomic findings and round counters (see research-extract-atomic-findings
+and research-compare-atomic-findings). Update after each round's validators return.
+-->
+
+### Vendor: `<model-slug>`
+
+**Round counters:**
+
+| Round | Slots launched | New findings | consecutive_no_new | Stopped |
+|-------|----------------|--------------|---------------------|---------|
+| | | | | |
+
+**Accumulated findings:**
+
+- <!-- atomic finding 1 (source: worker-<model>-<copy>-<hash>.md) -->
+
+### Variant-level consolidated findings (after cross-vendor merge)
+
+- <!-- finding present in all/any vendor's accumulated set -->
+
+## Conflicts
+
+<!-- Contradictory claims flagged by research-compare-atomic-findings. Surface to Stage III. -->
+
+| Claim A | Claim B | Source A | Source B |
+|---------|---------|----------|----------|
+| | | | |
+
 ## Related-work leads
 
 <!-- After each wave, record leads from validated output that imply new subgoals outside this subtask. Dedup against existing entries before adding. -->

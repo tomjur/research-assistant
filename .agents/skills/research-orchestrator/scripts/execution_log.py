@@ -12,6 +12,10 @@ __all__ = [
     "CANONICAL_LOG_PATTERN",
     "ExecutionLogRole",
     "format_log_filename",
+    "log_end_event",
+    "log_event",
+    "log_step",
+    "parse_duration_from_start",
     "render_execution_record",
     "resolve_task_execution_log",
     "utc_timestamp_iso",
@@ -24,6 +28,7 @@ ExecutionLogRole: TypeAlias = Literal[
     "planning",
     "subtask",
     "host_subagent",
+    "step",
 ]
 
 # Filenames from format_log_filename(): log_YYYY-MM-DD_HHMMSS.txt (UTC).
@@ -103,3 +108,136 @@ def append_execution_record(log_path: Path, record: str) -> None:
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open("a", encoding="utf-8") as f:
         f.write(record)
+
+
+# ---------------------------------------------------------------------------
+# High-level logging (timestamp generated at write-time)
+# ---------------------------------------------------------------------------
+
+
+def log_event(
+    log_path: Path,
+    phase: Literal["START", "END"],
+    role: ExecutionLogRole,
+    fields: list[tuple[str, str]],
+) -> None:
+    """
+    Append a START or END block with the timestamp captured **at call time**.
+
+    Preferred over calling ``utc_timestamp_iso`` → ``render_execution_record``
+    → ``append_execution_record`` manually, because the timestamp cannot be
+    reused or batched by the caller.
+    """
+    ts = utc_timestamp_iso()
+    record = render_execution_record(ts, phase, role, fields)
+    append_execution_record(log_path, record)
+
+
+def log_end_event(
+    log_path: Path,
+    role: ExecutionLogRole,
+    fields: list[tuple[str, str]],
+    match_fields: dict[str, str] | None = None,
+) -> None:
+    """
+    Append an END block with **auto-computed** ``duration_s``.
+
+    Calls :func:`parse_duration_from_start` to find the matching START block
+    and compute wall-clock seconds, then appends ``duration_s`` to *fields*
+    before writing.  If no matching START is found, ``duration_s`` is recorded
+    as ``"unknown"``.
+    """
+    duration = parse_duration_from_start(log_path, role, match_fields)
+    duration_val = str(duration) if duration is not None else "unknown"
+    all_fields = list(fields) + [("duration_s", duration_val)]
+    log_event(log_path, "END", role, all_fields)
+
+
+# ---------------------------------------------------------------------------
+# Lightweight step logging (single block, no START/END pair needed)
+# ---------------------------------------------------------------------------
+
+def log_step(
+    log_path: Path,
+    parent_role: ExecutionLogRole,
+    action: str,
+    fields: list[tuple[str, str]] | None = None,
+    *,
+    now: datetime | None = None,
+) -> None:
+    """
+    Append a single ``STEP`` block that records a discrete action within a phase.
+
+    Unlike worker/validator/planning blocks, steps do **not** require paired
+    START/END — they capture point-in-time events such as script calls, skill
+    invocations, user decisions, or dedup stats.
+
+    ``parent_role`` is the role of the enclosing phase (e.g. ``"planning"``,
+    ``"subtask"``). The block is rendered with role ``step`` and includes
+    ``parent_role`` and ``action`` as fields automatically.
+    """
+    ts = utc_timestamp_iso(now=now)
+    all_fields: list[tuple[str, str]] = [
+        ("parent_role", parent_role),
+        ("action", action),
+    ]
+    if fields:
+        all_fields.extend(fields)
+    record = render_execution_record(ts, "START", "step", all_fields)
+    append_execution_record(log_path, record)
+
+
+# ---------------------------------------------------------------------------
+# Duration helpers
+# ---------------------------------------------------------------------------
+
+_HEADER_RE = re.compile(
+    r"^--- (\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z) (START|END) (\S+) ---$"
+)
+
+
+def parse_duration_from_start(
+    log_path: Path,
+    role: ExecutionLogRole,
+    match_fields: dict[str, str] | None = None,
+) -> float | None:
+    """
+    Scan *backwards* for the most recent ``START`` block of *role* whose fields
+    are a superset of *match_fields*, and return wall-clock seconds from that
+    timestamp to now (UTC).
+
+    Returns ``None`` if no matching START is found.  Useful for computing
+    ``duration_s`` when appending an END block.
+    """
+    if not log_path.exists():
+        return None
+    text = log_path.read_text(encoding="utf-8")
+    blocks = text.split("--- ")
+    # Walk backwards (most recent first).
+    for raw in reversed(blocks):
+        if not raw.strip():
+            continue
+        lines = raw.splitlines()
+        header_line = "--- " + lines[0]
+        m = _HEADER_RE.match(header_line)
+        if not m:
+            continue
+        ts_str, phase, blk_role = m.group(1), m.group(2), m.group(3)
+        if phase != "START" or blk_role != role:
+            continue
+        if match_fields:
+            blk_fields = {}
+            for line in lines[1:]:
+                if ": " in line and not line.startswith("  "):
+                    k, v = line.split(": ", 1)
+                    if not v.startswith("|"):
+                        blk_fields[k] = v
+            if not all(blk_fields.get(k) == v for k, v in match_fields.items()):
+                continue
+        # Parse the START timestamp and compute delta.
+        start_dt = datetime.strptime(ts_str, "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=timezone.utc
+        )
+        delta = datetime.now(timezone.utc) - start_dt
+        return round(delta.total_seconds(), 1)
+    return None
